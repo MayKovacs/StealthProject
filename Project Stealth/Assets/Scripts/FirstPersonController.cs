@@ -19,6 +19,7 @@ public class FirstPersonController : MonoBehaviour
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier;
     private bool isGrounded, running, pressedShift, bool1, bool2, crouched, pressedCtrl, moving;
+    private Animator crouchAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -35,13 +36,14 @@ public class FirstPersonController : MonoBehaviour
 
         // Sets the movement to walk
         movementMultiplier = 1;
+
+        crouchAnimator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         MovementType();
-        Crouched();
         FirstPersonCamera();
         HorizontalMovement();
         VerticalMovement();
@@ -129,11 +131,6 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
-    private void Crouched()
-    {
-
-    }
-
     private void MovementType()
     {
         ButtonPressedCheck();
@@ -144,6 +141,7 @@ public class FirstPersonController : MonoBehaviour
             if (!crouched)
             {
                 crouched = true;
+                crouchAnimator.SetTrigger("crouched");
                 running = false;
                 // CrouchWalk Speed
                 movementMultiplier = 0.6f; 
@@ -151,6 +149,7 @@ public class FirstPersonController : MonoBehaviour
             else
             {
                 crouched = false;
+                crouchAnimator.ResetTrigger("crouched");
                 running = false;
                 // Walking Speed
                 movementMultiplier = 1;
