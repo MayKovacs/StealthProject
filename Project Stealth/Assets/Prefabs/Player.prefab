@@ -259,11 +259,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacterController: {fileID: 7764783461464444761}
   playerFeet: {fileID: 7764783461190898794}
+  debugMenu: {fileID: 0}
   playerCamera: {fileID: 7764783461477861961}
-  movementSpeed: 10
+  walkingSpeed: 3
   mouseSensitivity: 2
-  jumpHeight: 2
-  fallSpeed: 5
+  jumpHeight: 1.5
+  fallSpeed: 6
 --- !u!1 &7764783461477861960
 GameObject:
   m_ObjectHideFlags: 0

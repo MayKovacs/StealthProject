@@ -11,14 +11,14 @@ public class FirstPersonController : MonoBehaviour
     public Camera playerCamera;
 
     // Variables that need adjusting
-    public float movementSpeed = 10;
+    public float walkingSpeed = 3;
     public float mouseSensitivity = 2;
-    public float jumpHeight = 2;
-    public float fallSpeed = 5;
+    public float jumpHeight = 1.5f;
+    public float fallSpeed = 6;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset;
-    private bool isGrounded;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier;
+    private bool isGrounded, running, pressedShift, bool1, bool2, crouched, pressedCtrl, moving;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +29,19 @@ public class FirstPersonController : MonoBehaviour
 
         // Sets the step off set to what it is set in Unity
         stepOffset = playerCharacterController.stepOffset;
+
+        // Finds the debug menu in the scene
+        debugMenu = FindObjectOfType<DebugMenu>();
+
+        // Sets the movement to walk
+        movementMultiplier = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+        MovementType();
+        Crouched();
         FirstPersonCamera();
         HorizontalMovement();
         VerticalMovement();
@@ -43,10 +51,10 @@ public class FirstPersonController : MonoBehaviour
     void Movement()
     {
         // Sets move as a Vector 3 to gather all speeds into one variable
-        Vector3 move = transform.right * xSpeed + transform.forward * zSpeed + transform.up * ySpeed;
+        Vector3 move = transform.right * xSpeed * movementMultiplier + transform.forward * zSpeed * movementMultiplier + transform.up * ySpeed;
 
         // Connects to the character controller and makes the player move
-        playerCharacterController.Move(move * Time.deltaTime * movementSpeed);
+        playerCharacterController.Move(move * Time.deltaTime * walkingSpeed);
     }
 
     void FirstPersonCamera()
@@ -76,6 +84,21 @@ public class FirstPersonController : MonoBehaviour
             xSpeed *= 0.75f;
             zSpeed *= 0.75f;
         }
+        // Makes backwards movement slower
+        if (Input.GetAxis("Vertical") < 0)
+        {
+            zSpeed *= 0.8f;
+        }
+
+        // Checks if the player is moving
+        if (xSpeed != 0 || zSpeed != 0)
+        {
+            moving = true;
+        }
+        else
+        {
+            moving = false;
+        }
     }
 
     void VerticalMovement()
@@ -104,15 +127,137 @@ public class FirstPersonController : MonoBehaviour
             ySpeed = 0;
             playerCharacterController.stepOffset = stepOffset;
         }
+    }
+
+    private void Crouched()
+    {
 
     }
 
+    private void MovementType()
+    {
+        ButtonPressedCheck();
+
+        // Checks toggle for player to crouch
+        if (pressedCtrl)
+        {
+            if (!crouched)
+            {
+                crouched = true;
+                running = false;
+                // CrouchWalk Speed
+                movementMultiplier = 0.6f; 
+            }
+            else
+            {
+                crouched = false;
+                running = false;
+                // Walking Speed
+                movementMultiplier = 1;
+            }
+        }
+
+        // Checks for player to run or sprint, while not crouched
+        if (Input.GetAxis("Fire3") != 0 && !crouched)
+        {
+            if (pressedShift)
+            {
+                if (!running)
+                {
+                    running = true;
+                    // Sets timer for holding sprint
+                    sprintTimer = 0.2f;
+                    // Running Speed
+                    movementMultiplier = 1.5f;
+                }
+                else
+                {
+                    running = false;
+                    // Walking Speed
+                    movementMultiplier = 1;
+                }
+            }
+            else if (running)
+            {
+                sprintTimer -= Time.deltaTime;
+                if (sprintTimer <= 0)
+                {
+                    sprintTimer = 0;
+                    // Sprinting Speed
+                    movementMultiplier = 2;
+                }
+            }
+        }
+
+        // Checks toggle for player to crouch run
+        if (pressedShift && crouched)
+        {
+            if (!running)
+            {
+                running = true;
+                // CrouchRun Speed
+                movementMultiplier = 1.25f;
+            }
+            else
+            {
+                running = false;
+                // CrouchWalk Speed
+                movementMultiplier = 0.6f;
+            }
+        }
+
+        if (!moving && !crouched)
+        {
+            running = false;
+            // Walking Speed
+            movementMultiplier = 1;
+        }
+    }
+
+    private void ButtonPressedCheck()
+    {
+        // Checks if the player has pressed run
+        if (Input.GetAxis("Fire3") != 0)
+        {
+            if (!bool1)
+            {
+                pressedShift = true;
+                bool1 = true;
+            }
+            else
+            {
+                pressedShift = false;
+            }
+        }
+        else
+        {
+            bool1 = false;
+        }
+
+        // Checks if the player has pressed run
+        if (Input.GetAxis("Fire1") != 0)
+        {
+            if (!bool2)
+            {
+                pressedCtrl = true;
+                bool2 = true;
+            }
+            else
+            {
+                pressedCtrl = false;
+            }
+        }
+        else
+        {
+            bool2 = false;
+        }
+    }
     private void DebugMenu()
     {
         // Sends values to the debug menu script
-        debugMenu.xSpeed = xSpeed;
+        debugMenu.xSpeed = xSpeed * movementMultiplier;
         debugMenu.ySpeed = ySpeed;
-        debugMenu.zSpeed = zSpeed;
+        debugMenu.zSpeed = zSpeed * movementMultiplier;
         debugMenu.isGrounded = isGrounded;
     }
 }
