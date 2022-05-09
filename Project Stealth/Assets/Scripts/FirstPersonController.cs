@@ -187,6 +187,12 @@ public class FirstPersonController : MonoBehaviour
                 }
             }
         }
+        else if (sprintTimer <= 0)
+        {
+            running = false;
+            // Walking Speed
+            movementMultiplier = 1;
+        }
 
         // Checks toggle for player to crouch run
         if (pressedShift && crouched)
