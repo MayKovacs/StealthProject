@@ -22,7 +22,7 @@ public class FirstPersonController : MonoBehaviour
 
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer;
-    private bool isGrounded, running, pressedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, cloaked;
+    private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, cloaked, startedRunning;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -178,42 +178,52 @@ public class FirstPersonController : MonoBehaviour
         }
 
         // Checks for player to run or sprint, while not crouched
-        if (Input.GetAxis("Fire3") != 0 && !crouched)
+        if (!crouched)
         {
-            if (pressedShift)
+            if (pressedShift && !running)
             {
-                if (!running)
+                running = true;
+                // Sets timer for holding sprint
+                sprintTimer = 0.2f;
+                // Running Speed
+                movementMultiplier = 1.5f;
+                startedRunning = true;
+            }
+            else if (releasedShift && running)
+            {
+                if (!startedRunning)
                 {
-                    running = true;
-                    // Sets timer for holding sprint
                     sprintTimer = 0.2f;
-                    // Running Speed
-                    movementMultiplier = 1.5f;
-                }
-                else
-                {
                     running = false;
                     // Walking Speed
                     movementMultiplier = 1;
                 }
+                else
+                {
+                    startedRunning = false;
+                    sprintTimer = 0.2f;
+                    movementMultiplier = 1.5f;
+                }
             }
-            else if (running && !crouched)
+            else if (Input.GetAxis("Fire3") != 0 && running)
             {
                 sprintTimer -= Time.deltaTime;
                 if (sprintTimer <= 0)
                 {
                     sprintTimer = 0;
+                    startedRunning = false;
                     // Sprinting Speed
                     movementMultiplier = 2;
                 }
             }
+            else if (sprintTimer <= 0)
+            {
+                running = false;
+                // Walking Speed
+                movementMultiplier = 1;
+            }
         }
-        else if (sprintTimer <= 0 && !crouched)
-        {
-            running = false;
-            // Walking Speed
-            movementMultiplier = 1;
-        }
+ 
 
         // Checks toggle for player to crouch run
         if (pressedShift && crouched)
@@ -238,6 +248,12 @@ public class FirstPersonController : MonoBehaviour
             // Walking Speed
             movementMultiplier = 1;
         }
+        else if (!moving && crouched)
+        {
+            running = false;
+            // CrouchWalk Speed
+            movementMultiplier = 0.6f;
+        }
     }
 
     private void ButtonPressedCheck()
@@ -255,9 +271,15 @@ public class FirstPersonController : MonoBehaviour
                 pressedShift = false;
             }
         }
+        else if (bool1 == true)
+        {
+            releasedShift = true;
+            //Debug.Log("Released Shift");
+            bool1 = false;
+        }
         else
         {
-            bool1 = false;
+            releasedShift = false;
         }
 
         // Checks if the player has pressed run
