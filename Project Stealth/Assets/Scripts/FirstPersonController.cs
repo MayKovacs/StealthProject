@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class FirstPersonController : MonoBehaviour
     public DebugMenu debugMenu;
     public Camera playerCamera;
     public GameObject invisEffect;
+    public Slider cloakMeter;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -47,6 +49,10 @@ public class FirstPersonController : MonoBehaviour
 
         invisEffect = GameObject.Find("InvisEffect");
         invisEffect.SetActive(false);
+
+        cloakMeter = GameObject.Find("CloakMeter").GetComponent<Slider>();
+        cloakMeter.maxValue = cloakDuration;
+        cloakMeter.value = cloakDuration;
     }
 
     // Update is called once per frame
@@ -346,6 +352,7 @@ public class FirstPersonController : MonoBehaviour
             cloakCurrentDuration = 0;
             Cloak();
         }
+        cloakMeter.value = cloakCurrentDuration;
     }
 
     private void CloakDeactive()
@@ -360,6 +367,7 @@ public class FirstPersonController : MonoBehaviour
                 cloakCurrentDuration = cloakDuration;
             }
         }
+        cloakMeter.value = cloakCurrentDuration;
     }
 
     private void DebugMenu()
