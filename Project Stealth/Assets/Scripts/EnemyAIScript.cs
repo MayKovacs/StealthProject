@@ -32,11 +32,12 @@ public class EnemyAIScript : MonoBehaviour
         Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
         if (hitInfo.collider.tag == "Player")
         {
-            Debug.Log("I see you Bitch");
+            Debug.Log("I see you");
+            ChasePlayer();
         }
         else
         {
-
+            Patrolling();
         }
     }
 
