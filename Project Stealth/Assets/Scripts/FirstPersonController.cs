@@ -15,10 +15,11 @@ public class FirstPersonController : MonoBehaviour
     public float mouseSensitivity = 2;
     public float jumpHeight = 1.5f;
     public float fallSpeed = 6;
+    public float cloakDuration = 8;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier;
-    private bool isGrounded, running, pressedShift, bool1, bool2, crouched, pressedCtrl, moving;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration;
+    private bool isGrounded, running, pressedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, cloaked;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -38,11 +39,27 @@ public class FirstPersonController : MonoBehaviour
         movementMultiplier = 1;
 
         crouchAnimator = this.GetComponent<Animator>();
+
+        cloakCurrentDuration = cloakDuration;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Cloak();
+        }
+        else if (cloaked)
+        {
+            CloakActive();
+        }
+        else
+        {
+            CloakDeactive();
+        }
+
+        ButtonPressedCheck();
         MovementType();
         FirstPersonCamera();
         HorizontalMovement();
@@ -108,7 +125,7 @@ public class FirstPersonController : MonoBehaviour
         isGrounded = playerFeet.isGrounded;
 
         // Checks if the player can jump
-        if (Input.GetAxis("Jump") != 0 && isGrounded == true && ySpeed == 0)
+        if (pressedSpace && isGrounded && ySpeed == 0)
         {
             // Starts the jump and prevents stepping
             ySpeed = jumpHeight;
@@ -133,8 +150,6 @@ public class FirstPersonController : MonoBehaviour
 
     private void MovementType()
     {
-        ButtonPressedCheck();
-
         // Checks toggle for player to crouch
         if (pressedCtrl)
         {
@@ -256,7 +271,61 @@ public class FirstPersonController : MonoBehaviour
         {
             bool2 = false;
         }
+
+        // Checks if the player has pressed space
+        if (Input.GetAxis("Jump") != 0)
+        {
+            if (!bool3)
+            {
+                pressedSpace = true;
+                bool3 = true;
+            }
+            else
+            {
+                pressedSpace = false;
+            }
+        }
+        else
+        {
+            bool3 = false;
+        }
     }
+
+    private void Cloak()
+    {
+        if (!cloaked)
+        {
+            cloaked = true;
+            MeshRenderer mr = this.GetComponent<MeshRenderer>();
+            mr.enabled = false;
+        }
+        else
+        {
+            cloaked = false;
+            MeshRenderer mr = this.GetComponent<MeshRenderer>();
+            mr.enabled = true;
+        }
+    }
+
+    private void CloakActive()
+    {
+        cloakCurrentDuration -= Time.deltaTime;
+        if (cloakCurrentDuration <= 0)
+        {
+            cloakCurrentDuration = 0;
+            Cloak();
+        }
+    }
+
+    private void CloakDeactive()
+    {
+        cloakCurrentDuration += Time.deltaTime;
+        if (cloakCurrentDuration >= cloakDuration)
+        {
+            cloakCurrentDuration = cloakDuration;
+        }
+    }
+
     private void DebugMenu()
     {
         // Sends values to the debug menu script
@@ -264,5 +333,6 @@ public class FirstPersonController : MonoBehaviour
         debugMenu.ySpeed = ySpeed;
         debugMenu.zSpeed = zSpeed * movementMultiplier;
         debugMenu.isGrounded = isGrounded;
+        debugMenu.cloaked = cloaked;
     }
 }
