@@ -194,6 +194,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7764783461464444760, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
+      propertyPath: cloakBufferRegenTime
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444761, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: m_Height
       value: 1.8
@@ -3158,11 +3162,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4530223322046847619, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5500798595974721587, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133376777070856716, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}

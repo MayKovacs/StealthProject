@@ -9,6 +9,7 @@ public class FirstPersonController : MonoBehaviour
     public FeetCollider playerFeet;
     public DebugMenu debugMenu;
     public Camera playerCamera;
+    public GameObject invisEffect;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -16,9 +17,11 @@ public class FirstPersonController : MonoBehaviour
     public float jumpHeight = 1.5f;
     public float fallSpeed = 6;
     public float cloakDuration = 8;
+    public float cloakBufferRegenTime = 4;
+    public float cloakRegenSpeed = 0.5f;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer;
     private bool isGrounded, running, pressedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, cloaked;
     private Animator crouchAnimator;
 
@@ -41,6 +44,9 @@ public class FirstPersonController : MonoBehaviour
         crouchAnimator = this.GetComponent<Animator>();
 
         cloakCurrentDuration = cloakDuration;
+
+        invisEffect = GameObject.Find("InvisEffect");
+        invisEffect.SetActive(false);
     }
 
     // Update is called once per frame
@@ -191,7 +197,7 @@ public class FirstPersonController : MonoBehaviour
                     movementMultiplier = 1;
                 }
             }
-            else if (running)
+            else if (running && !crouched)
             {
                 sprintTimer -= Time.deltaTime;
                 if (sprintTimer <= 0)
@@ -202,7 +208,7 @@ public class FirstPersonController : MonoBehaviour
                 }
             }
         }
-        else if (sprintTimer <= 0)
+        else if (sprintTimer <= 0 && !crouched)
         {
             running = false;
             // Walking Speed
@@ -298,12 +304,15 @@ public class FirstPersonController : MonoBehaviour
             cloaked = true;
             MeshRenderer mr = this.GetComponent<MeshRenderer>();
             mr.enabled = false;
+            invisEffect.SetActive(true);
         }
         else
         {
             cloaked = false;
             MeshRenderer mr = this.GetComponent<MeshRenderer>();
             mr.enabled = true;
+            cloakRegenTimer = cloakBufferRegenTime;
+            invisEffect.SetActive(false);
         }
     }
 
@@ -319,10 +328,15 @@ public class FirstPersonController : MonoBehaviour
 
     private void CloakDeactive()
     {
-        cloakCurrentDuration += Time.deltaTime;
-        if (cloakCurrentDuration >= cloakDuration)
+        cloakRegenTimer -= Time.deltaTime;
+        if (cloakRegenTimer <= 0)
         {
-            cloakCurrentDuration = cloakDuration;
+            cloakRegenTimer = 0;
+            cloakCurrentDuration += Time.deltaTime * cloakRegenSpeed;
+            if (cloakCurrentDuration >= cloakDuration)
+            {
+                cloakCurrentDuration = cloakDuration;
+            }
         }
     }
 
@@ -334,5 +348,6 @@ public class FirstPersonController : MonoBehaviour
         debugMenu.zSpeed = zSpeed * movementMultiplier;
         debugMenu.isGrounded = isGrounded;
         debugMenu.cloaked = cloaked;
+        debugMenu.cloakCurrentDuration = cloakCurrentDuration;
     }
 }
