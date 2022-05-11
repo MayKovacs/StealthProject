@@ -12,14 +12,16 @@ public class EnemyAIScript : MonoBehaviour
     public LayerMask isGround, isPlayer;
 
     // Variables that need adjusting
+    public float intenseChaseTime = 15;
+    public float alertModeTime = 60;
     public float waitTime = 5;
     public float walkPointRange = 5;
     public float attackRange = 5;
 
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
-    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, investigatingPoint;
-    [SerializeField] private float currentWaitTime;
+    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer;
+    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer;
 
     private void Awake()
     {
@@ -27,10 +29,31 @@ public class EnemyAIScript : MonoBehaviour
         player = GameObject.Find("Player");
         enemyEyes = this.transform.Find("EnemyHead/EnemyEyes");
         agent = GetComponent<NavMeshAgent>();
+
+        // Begins AI in casual mode;
+        CasualMode();
     }
 
     private void Update()
     {
+        if (intenseModeTimer > 0)
+        {
+            intenseModeTimer -= Time.deltaTime;
+        }
+        else if (alertModeTimer > 0)
+        {
+            alertModeTimer -= Time.deltaTime;
+        }
+
+        if (intenseModeTimer < 0)
+        {
+            AlertMode();
+        }
+        if (alertModeTimer < 0 && currentWaitTime <= 1)
+        {
+            CasualMode();
+        }
+
         // Draws a linecast to see if the enemy has a line of sight to the player
         Debug.DrawLine(enemyEyes.transform.position, player.transform.position);
         Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
@@ -72,6 +95,40 @@ public class EnemyAIScript : MonoBehaviour
 
     }
 
+    private void CasualMode()
+    {
+        agent.speed = 2;
+        agent.angularSpeed = 140;
+        waitTime = 8;
+        walkPointRange = 5;
+
+        alertModeTimer = 0;
+        intenseModeTimer = 0;
+    }
+
+    private void AlertMode()
+    {
+        agent.speed = 2.5f;
+        agent.angularSpeed = 200;
+        waitTime = 6;
+        walkPointRange = 7.5f;
+
+        intenseModeTimer = 0;
+        alertModeTimer = alertModeTime;
+    }
+
+    private void IntenseMode()
+    {
+        agent.speed = 3;
+        agent.angularSpeed = 220;
+        waitTime = 4;
+        currentWaitTime = waitTime;
+        walkPointRange = 10;
+
+        alertModeTimer = alertModeTime;
+        intenseModeTimer = intenseChaseTime;
+    }
+
     private void Patrolling()
     {
         if (!walkPointSet)
@@ -109,7 +166,6 @@ public class EnemyAIScript : MonoBehaviour
             currentWaitTime = waitTime;
             reachedWalkPoint = false;
             walkPointSet = false;
-            investigatingPoint = false;
         }
     }
 
@@ -126,7 +182,9 @@ public class EnemyAIScript : MonoBehaviour
 
         walkPoint = new Vector3(transform.position.x + randomX, 1, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, isGround))
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, isGround) && distanceToWalkPoint.magnitude > walkPointRange / 2)
         {
             walkPointSet = true;
         }
@@ -135,6 +193,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private void ChasePlayer()
     {
+        IntenseMode();
         chasingPlayer = true;
         agent.SetDestination(player.transform.position);
         Vector3 distanceToPlayer = transform.position - player.transform.position;

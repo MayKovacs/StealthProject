@@ -200,7 +200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444760, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: cloakDuration
-      value: 20
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444760, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: cloakBufferRegenTime
@@ -3304,6 +3304,8 @@ MonoBehaviour:
   isPlayer:
     serializedVersion: 2
     m_Bits: 64
+  intenseChaseTime: 15
+  alertModeTime: 60
   waitTime: 5
   walkPointRange: 2
   attackRange: 5
@@ -3313,8 +3315,9 @@ MonoBehaviour:
   reachedWalkPoint: 0
   seePlayer: 0
   chasingPlayer: 0
-  investigatingPoint: 0
   currentWaitTime: 0
+  intenseModeTimer: 0
+  alertModeTimer: 0
 --- !u!136 &2065963007
 CapsuleCollider:
   m_ObjectHideFlags: 0
