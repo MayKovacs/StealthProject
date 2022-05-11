@@ -22,9 +22,12 @@ public class FirstPersonController : MonoBehaviour
     public float cloakBufferRegenTime = 4;
     public float cloakRegenSpeed = 0.5f;
 
+    // Variables that need accesing
+    public bool cloaked;
+
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer;
-    private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, cloaked, startedRunning;
+    private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
