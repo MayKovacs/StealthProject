@@ -11,7 +11,7 @@ public class FirstPersonController : MonoBehaviour
     public DebugMenu debugMenu;
     public Camera playerCamera;
     public GameObject invisEffect;
-    public Slider cloakMeter;
+    public Slider cloakMeter, healthMeter;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -24,6 +24,7 @@ public class FirstPersonController : MonoBehaviour
 
     // Variables that need accesing
     public bool cloaked;
+    public float health;
 
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer;
@@ -56,11 +57,20 @@ public class FirstPersonController : MonoBehaviour
         cloakMeter = GameObject.Find("CloakMeter").GetComponent<Slider>();
         cloakMeter.maxValue = cloakDuration;
         cloakMeter.value = cloakDuration;
+
+        health = 100;
+        healthMeter = GameObject.Find("HealthMeter").GetComponent<Slider>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        healthMeter.value = health;
         if (Input.GetKeyDown(KeyCode.E))
         {
             Cloak();

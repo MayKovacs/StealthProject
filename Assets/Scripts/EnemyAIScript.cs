@@ -6,10 +6,11 @@ using UnityEngine.AI;
 public class EnemyAIScript : MonoBehaviour
 {
     // Variables that need to be assigned
-    public GameObject player;
+    public GameObject player, enemyGun;
     public Transform enemyEyes;
     public NavMeshAgent agent;
     public LayerMask isGround, isPlayer;
+    public GameObject wayPoint1, wayPoint2, wayPoint3;
 
     // Variables that need adjusting
     public float intenseChaseTime = 15;
@@ -17,11 +18,15 @@ public class EnemyAIScript : MonoBehaviour
     public float waitTime = 5;
     public float walkPointRange = 5;
     public float attackRange = 5;
+    public float closeAimRange = 2.5f;
+    public float gunDamage = 5;
+    public float gunRateOfFire = 1.5f;
 
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
     [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer;
-    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer;
+    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer, gunShotTimer;
+    [SerializeField] private int wayPointNumber, wayPointCounter;
 
     private void Awake()
     {
@@ -32,7 +37,24 @@ public class EnemyAIScript : MonoBehaviour
 
         // Begins AI in casual mode;
         CasualMode();
+
+        // Determines how many waypoints there are
+        wayPointNumber = 1;
+        if (wayPoint1 != null)
+        {
+            wayPointNumber++;
+            if (wayPoint2 != null)
+            {
+                wayPointNumber++;
+                if (wayPoint3 != null)
+                {
+                    wayPointNumber++;
+                }
+            }
+        }
+        gunShotTimer = gunRateOfFire;
     }
+
 
     private void Update()
     {
@@ -57,9 +79,9 @@ public class EnemyAIScript : MonoBehaviour
         // Draws a linecast to see if the enemy has a line of sight to the player
         Debug.DrawLine(enemyEyes.transform.position, player.transform.position);
         Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
-        if (hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
+        if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
         {
-            Debug.Log("I see you");
+            // Debug.Log("I see you");
             seePlayer = true;
         }
         else
@@ -73,9 +95,8 @@ public class EnemyAIScript : MonoBehaviour
             chasingPlayer = false;
             lastKnownPlayerPosition = player.transform.position;
             InvestigatePoint(lastKnownPlayerPosition);
-            Debug.Log("lost you, investigating your last known position.");
+            // Debug.Log("lost you, investigating your last known position.");
         }
-
 
         if (seePlayer)
         {
@@ -92,7 +113,6 @@ public class EnemyAIScript : MonoBehaviour
                 Wait();
             }
         }
-
     }
 
     private void CasualMode()
@@ -131,6 +151,10 @@ public class EnemyAIScript : MonoBehaviour
 
     private void Patrolling()
     {
+        if (wayPointCounter == 3)
+        {
+            GoToWaypoint();
+        }
         if (!walkPointSet)
         {
             int i = 0;
@@ -144,6 +168,7 @@ public class EnemyAIScript : MonoBehaviour
                     break;
                 }
             }
+            wayPointCounter++;
         }
         if (walkPointSet)
         {
@@ -169,10 +194,35 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
+    private void GoToWaypoint()
+    {
+        int i = Random.Range(1, wayPointNumber);
+        wayPointCounter = 0;
+
+
+        if (i == 1)
+        {
+            walkPoint = wayPoint1.transform.position;
+        }
+        else if (i == 2)
+        {
+            walkPoint = wayPoint2.transform.position;
+        }
+        else if (i == 3)
+        {
+            walkPoint = wayPoint3.transform.position;
+        }
+        else
+        {
+            Debug.LogError("Couldn't find a waypoint");
+        }
+    }
+
     private void InvestigatePoint(Vector3 searchPoint)
     {
         // investigatingPoint = true;
         walkPoint = searchPoint;
+        wayPointCounter = 0;
     }
 
     private void SearchWalkPoint()
@@ -188,25 +238,60 @@ public class EnemyAIScript : MonoBehaviour
         {
             walkPointSet = true;
         }
-        Debug.Log("Finding a new random point");
+        // Debug.Log("Finding a new random point");
+        EquipGun(false);
     }
 
     private void ChasePlayer()
     {
         IntenseMode();
+        wayPointCounter = 0;
         chasingPlayer = true;
         agent.SetDestination(player.transform.position);
         Vector3 distanceToPlayer = transform.position - player.transform.position;
         if (distanceToPlayer.magnitude < attackRange)
         {
             AttackPlayer();
+            gunShotTimer -= Time.deltaTime;
+        }
+        if (distanceToPlayer.magnitude < closeAimRange)
+        {
+            Aim();
         }
     }
 
     private void AttackPlayer()
     {
-        agent.SetDestination(transform.position);
+        EquipGun(true);
+        enemyGun.transform.LookAt(player.transform);
+        if (gunShotTimer <= 0)
+        {
+            ShootGun();
+            gunShotTimer = gunRateOfFire;
+        }
+    }
 
+    private void Aim()
+    {
+        agent.SetDestination(transform.position);
         transform.LookAt(player.transform);
+    }
+
+    private void EquipGun(bool Equip)
+    {
+        if (Equip)
+        {
+            enemyGun.SetActive(true);
+        }
+        else
+        {
+            enemyGun.SetActive(false);
+        }
+    }
+
+    private void ShootGun()
+    {
+        enemyGun.GetComponent<ShootBullet>().Shoot();
+        // Debug.Log("ShotBullet");
     }
 }
