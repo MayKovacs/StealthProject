@@ -519,9 +519,10 @@ GameObject:
   - component: {fileID: 500486147698790620}
   - component: {fileID: 500486147698794272}
   - component: {fileID: 500486147698790621}
+  - component: {fileID: 4688887650414456747}
   m_Layer: 7
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -674,8 +675,26 @@ MonoBehaviour:
   intenseModeTimer: 0
   alertModeTimer: 0
   gunShotTimer: 0
+  footStepTimer: 0
+  footStepSoundSpeedup: 0
   wayPointNumber: 0
   wayPointCounter: 0
+--- !u!54 &4688887650414456747
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500486147698790622}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &9107378931407187682
 GameObject:
   m_ObjectHideFlags: 0

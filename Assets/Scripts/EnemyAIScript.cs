@@ -233,11 +233,13 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
-    private void InvestigatePoint(Vector3 searchPoint)
+    public void InvestigatePoint(Vector3 searchPoint)
     {
         // investigatingPoint = true;
+        reachedWalkPoint = false;
         walkPoint = searchPoint;
         wayPointCounter = 0;
+        Debug.Log("Investigating Sound");
     }
 
     private void SearchWalkPoint()

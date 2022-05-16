@@ -13,6 +13,7 @@ public class FirstPersonController : MonoBehaviour
     public GameObject invisEffect;
     public Image bloodEffect;
     public Slider cloakMeter, healthMeter;
+    public GameObject enemylistenerWalk, enemylistenerRun;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -28,7 +29,7 @@ public class FirstPersonController : MonoBehaviour
     public float health;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer;
     private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning;
     private Animator crouchAnimator;
 
@@ -64,6 +65,7 @@ public class FirstPersonController : MonoBehaviour
         health = 100;
         healthMeter = GameObject.Find("HealthMeter").GetComponent<Slider>();
 
+        footStepTimer = 0.6f;
     }
 
     // Update is called once per frame
@@ -94,6 +96,7 @@ public class FirstPersonController : MonoBehaviour
         HorizontalMovement();
         VerticalMovement();
         Movement();
+        FootSteps();
         DebugMenu();
     }
     void Movement()
@@ -236,7 +239,7 @@ public class FirstPersonController : MonoBehaviour
                     sprintTimer = 0;
                     startedRunning = false;
                     // Sprinting Speed
-                    movementMultiplier = 2;
+                    movementMultiplier = 2.5f;
                 }
             }
             else if (sprintTimer <= 0)
@@ -391,6 +394,50 @@ public class FirstPersonController : MonoBehaviour
     {
         float alpha = 1 - health / 100;
         bloodEffect.color = new Color (255,255,255,alpha);
+    }
+
+    private void FootSteps()
+    {
+        if (moving)
+        {
+            footStepTimer -= Time.deltaTime * movementMultiplier;
+        }
+
+        if (footStepTimer <= 0)
+        {
+            if (movementMultiplier >= 1.25f)
+            {
+                FootStepRun();
+            }
+            else if (movementMultiplier >= 0.8f)
+            {
+                FootStepWalk();
+            }
+        }
+        else
+        {
+            listenerTimer -= Time.deltaTime;
+            if (listenerTimer <= 0)
+            {
+                enemylistenerRun.SetActive(false);
+                enemylistenerWalk.SetActive(false);
+            }
+        }
+    }
+    private void FootStepWalk()
+    {
+        FindObjectOfType<AudioManager>().Play("Player_Footstep_Walk");
+        footStepTimer = 0.6f;
+        enemylistenerWalk.SetActive(true);
+        listenerTimer = 0.05f;
+    }
+
+    private void FootStepRun()
+    {
+        FindObjectOfType<AudioManager>().Play("Player_Footstep_Run");
+        footStepTimer = 0.6f;
+        enemylistenerRun.SetActive(true);
+        listenerTimer = 0.05f;
     }
 
     private void DebugMenu()
