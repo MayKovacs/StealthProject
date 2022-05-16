@@ -11,6 +11,7 @@ public class EnemyAIScript : MonoBehaviour
     public NavMeshAgent agent;
     public LayerMask isGround, isPlayer;
     public GameObject wayPoint1, wayPoint2, wayPoint3;
+    public AudioSource audioSource;
 
     // Variables that need adjusting
     public float intenseChaseTime = 15;
@@ -25,7 +26,7 @@ public class EnemyAIScript : MonoBehaviour
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
     [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer;
-    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer, gunShotTimer;
+    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer, gunShotTimer, footStepTimer, footStepSoundSpeedup;
     [SerializeField] private int wayPointNumber, wayPointCounter;
 
     private void Awake()
@@ -53,6 +54,7 @@ public class EnemyAIScript : MonoBehaviour
             }
         }
         gunShotTimer = gunRateOfFire;
+        footStepTimer = 0.8f;
     }
 
 
@@ -107,6 +109,7 @@ public class EnemyAIScript : MonoBehaviour
             if (!reachedWalkPoint)
             {
                 Patrolling();
+                Footsteps();
             }
             else
             {
@@ -124,6 +127,8 @@ public class EnemyAIScript : MonoBehaviour
 
         alertModeTimer = 0;
         intenseModeTimer = 0;
+
+        footStepSoundSpeedup = 1;
     }
 
     private void AlertMode()
@@ -135,6 +140,8 @@ public class EnemyAIScript : MonoBehaviour
 
         intenseModeTimer = 0;
         alertModeTimer = alertModeTime;
+
+        footStepSoundSpeedup = 1.5f;
     }
 
     private void IntenseMode()
@@ -147,6 +154,8 @@ public class EnemyAIScript : MonoBehaviour
 
         alertModeTimer = alertModeTime;
         intenseModeTimer = intenseChaseTime;
+
+        footStepSoundSpeedup = 2f;
     }
 
     private void Patrolling()
@@ -185,12 +194,18 @@ public class EnemyAIScript : MonoBehaviour
 
     private void Wait()
     {
+        if (currentWaitTime == waitTime)
+        {
+            PlayFootStep();
+        }
+            
         currentWaitTime -= Time.deltaTime;
         if (currentWaitTime <= 0)
         {
             currentWaitTime = waitTime;
             reachedWalkPoint = false;
             walkPointSet = false;
+            PlayFootStep();
         }
     }
 
@@ -293,5 +308,21 @@ public class EnemyAIScript : MonoBehaviour
     {
         enemyGun.GetComponent<ShootBullet>().Shoot();
         // Debug.Log("ShotBullet");
+    }
+
+    private void Footsteps()
+    {
+        footStepTimer -= Time.deltaTime * footStepSoundSpeedup;
+        if (footStepTimer <= 0)
+        {
+            audioSource.Play();
+            footStepTimer = 0.8f;
+        }
+    }
+
+    private void PlayFootStep()
+    {
+        audioSource.Play();
+        footStepTimer = 0.8f;
     }
 }
