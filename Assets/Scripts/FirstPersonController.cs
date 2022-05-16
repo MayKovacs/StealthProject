@@ -11,6 +11,7 @@ public class FirstPersonController : MonoBehaviour
     public DebugMenu debugMenu;
     public Camera playerCamera;
     public GameObject invisEffect;
+    public Image bloodEffect;
     public Slider cloakMeter, healthMeter;
 
     // Variables that need adjusting
@@ -54,6 +55,8 @@ public class FirstPersonController : MonoBehaviour
         invisEffect = GameObject.Find("InvisEffect");
         invisEffect.SetActive(false);
 
+        bloodEffect = GameObject.Find("BloodEffect").GetComponent<Image>();
+
         cloakMeter = GameObject.Find("CloakMeter").GetComponent<Slider>();
         cloakMeter.maxValue = cloakDuration;
         cloakMeter.value = cloakDuration;
@@ -71,6 +74,7 @@ public class FirstPersonController : MonoBehaviour
             Application.Quit();
         }
         healthMeter.value = health;
+        BloodEffect();
         if (Input.GetKeyDown(KeyCode.E))
         {
             Cloak();
@@ -381,6 +385,12 @@ public class FirstPersonController : MonoBehaviour
             }
         }
         cloakMeter.value = cloakCurrentDuration;
+    }
+
+    private void BloodEffect()
+    {
+        float alpha = 1 - health / 100;
+        bloodEffect.color = new Color (255,255,255,alpha);
     }
 
     private void DebugMenu()
