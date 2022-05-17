@@ -24,7 +24,7 @@ public class EnemyAIScript : MonoBehaviour
 
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
-    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer;
+    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped;
     [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel;
     [SerializeField] private int wayPointNumber, wayPointCounter, investigatePriority;
 
@@ -140,6 +140,11 @@ public class EnemyAIScript : MonoBehaviour
         waitTime = 8;
         walkPointRange = 10;
         footStepSoundSpeedup = 1;
+        if (gunEquiped)
+        {
+            EquipGun(false);
+        }
+
     }
 
     private void AlertMode()
@@ -149,6 +154,11 @@ public class EnemyAIScript : MonoBehaviour
         waitTime = 5;
         walkPointRange = 7.5f;
         footStepSoundSpeedup = 1.5f;
+        if (gunEquiped)
+        {
+            EquipGun(false);
+        }
+
     }
 
     private void IntenseMode()
@@ -158,7 +168,11 @@ public class EnemyAIScript : MonoBehaviour
         waitTime = 2;
         walkPointRange = 6;
         footStepSoundSpeedup = 2f;
-        EquipGun(true);
+        if (!gunEquiped)
+        {
+            EquipGun(true);
+        }
+
     }
 
     private void Patrolling()
@@ -175,9 +189,9 @@ public class EnemyAIScript : MonoBehaviour
             {
                 i++;
                 SearchWalkPoint();
-                if (i == 20)
+                if (i == 10)
                 {
-                    Debug.LogError("Couldn't find a waypoint for " + this.name + " after " + i + " attempts");
+                    Debug.LogWarning("Couldn't find a waypoint for " + this.name + " after " + i + " attempts. Enemy going to waypoint instead");
                     GoToWaypoint();
                     break;
                 }
@@ -240,9 +254,13 @@ public class EnemyAIScript : MonoBehaviour
         investigatePriority = 1;
         walkPointSet = true;
         reachedWalkPoint = false;
+
+        float randomZ = Random.Range(-0.05f, 0.05f);
+        float randomX = Random.Range(-0.05f, 0.05f);
+        walkPoint = new Vector3(searchPoint.x + randomX, searchPoint.y, searchPoint.z + randomZ);
+
         walkPoint = searchPoint;
         wayPointCounter = 0;
-        Debug.Log("Investigating Prio 1 Sound");
     }
 
     public void InvestigatePointPriorityTwo(Vector3 searchPoint)
@@ -253,12 +271,10 @@ public class EnemyAIScript : MonoBehaviour
         wayPointCounter = 0;
         if (investigatePriority == 1)
         {
-            Debug.Log("Ignoring prio 2 sound");
             return;
         }
         investigatePriority = 2;
         reachedWalkPoint = false;
-        Debug.Log("Investigating Prio 2 Sound");
     }
 
     public void InvestigatePointPriorityThree(Vector3 searchPoint)
@@ -269,13 +285,10 @@ public class EnemyAIScript : MonoBehaviour
         wayPointCounter = 0;
         if (investigatePriority <= 2)
         {
-            Debug.Log("Ignoring prio 3 sound");
             return;
         }
         investigatePriority = 3;
         reachedWalkPoint = false;
-
-        Debug.Log("Investigating Prio 3 Sound");
     }
 
     public void InvestigatePointPriorityFour(Vector3 searchPoint)
@@ -286,16 +299,13 @@ public class EnemyAIScript : MonoBehaviour
         wayPointCounter = 0;
         if (investigatePriority <= 3)
         {
-            Debug.Log("Ignoring prio 4 sound");
             return;
         }
         investigatePriority = 4;
         reachedWalkPoint = false;
-        Debug.Log("Investigating Prio 4 Sound");
     }
     private void SearchWalkPoint()
     {
-        EquipGun(false);
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
@@ -343,7 +353,6 @@ public class EnemyAIScript : MonoBehaviour
 
     private void AttackPlayer()
     {
-        EquipGun(true);
         enemyGun.transform.LookAt(player.transform);
         RaycastHit hit;
         Physics.Linecast(enemyGun.transform.position, player.transform.position, out hit);
@@ -362,12 +371,15 @@ public class EnemyAIScript : MonoBehaviour
 
     private void EquipGun(bool Equip)
     {
-        if (Equip)
+        if (Equip && !gunEquiped)
         {
+            gunEquiped = true;
             enemyGun.SetActive(true);
+            enemyGun.GetComponent<ShootBullet>().ReadySound();
         }
-        else
+        else if (!Equip && gunEquiped)
         {
+            gunEquiped = false;
             enemyGun.SetActive(false);
         }
     }

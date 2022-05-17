@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
     // Need Assigning
-    public GameObject gunTip, enemyListener;
+    public GameObject gunTip, enemyShotListener, enemyGunListener;
     public FirstPersonController player;
     public EnemyAIScript enemy;
     public AudioSource gunshotSound;
@@ -32,14 +32,21 @@ public class ShootBullet : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
-            enemyListener.SetActive(false);
+            enemyShotListener.SetActive(false);
+            enemyGunListener.SetActive(false);
         }
+    }
+
+    public void ReadySound()
+    {
+        timer = 0.05f;
+        enemyGunListener.SetActive(true);
     }
 
     public void Shoot()
     {
         timer = 0.05f;
-        enemyListener.SetActive(true);
+        enemyShotListener.SetActive(true);
 
         gunshotSound.pitch = 1 + Random.Range(-0.05f, 0.05f);
         gunshotSound.Play();
