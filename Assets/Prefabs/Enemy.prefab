@@ -215,7 +215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500486146679344079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: 1, z: 0}
+  m_LocalPosition: {x: -0.00012539326, y: 6, z: 21.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 500486147288386173}
@@ -316,36 +316,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &500486146977728265
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 500486146977728264}
-  m_Layer: 7
-  m_Name: WayPoint3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &500486146977728264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500486146977728265}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 500486147288386173}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &500486147095278069
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +441,6 @@ Transform:
   - {fileID: 500486147698794273}
   - {fileID: 500486147596809927}
   - {fileID: 500486146679344078}
-  - {fileID: 500486146977728264}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -499,7 +468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500486147596809920}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 500486147288386173}
@@ -655,10 +624,9 @@ MonoBehaviour:
     m_Bits: 64
   wayPoint1: {fileID: 500486147596809920}
   wayPoint2: {fileID: 500486146679344079}
-  wayPoint3: {fileID: 500486146977728265}
+  wayPoint3: {fileID: 0}
   audioSource: {fileID: 6995902269202084118}
-  intenseChaseTime: 20
-  alertModeTime: 60
+  attentionSpan: 150
   waitTime: 5
   walkPointRange: 2
   attackRange: 10
@@ -672,13 +640,13 @@ MonoBehaviour:
   seePlayer: 0
   chasingPlayer: 0
   currentWaitTime: 0
-  intenseModeTimer: 0
-  alertModeTimer: 0
   gunShotTimer: 0
   footStepTimer: 0
   footStepSoundSpeedup: 0
+  susLevel: 0
   wayPointNumber: 0
   wayPointCounter: 0
+  investigatePriority: 0
 --- !u!54 &4688887650414456747
 Rigidbody:
   m_ObjectHideFlags: 0

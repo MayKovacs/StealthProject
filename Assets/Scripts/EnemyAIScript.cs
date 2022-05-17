@@ -178,6 +178,7 @@ public class EnemyAIScript : MonoBehaviour
                 if (i == 20)
                 {
                     Debug.LogError("Couldn't find a waypoint for " + this.name + " after " + i + " attempts");
+                    GoToWaypoint();
                     break;
                 }
             }
@@ -213,6 +214,7 @@ public class EnemyAIScript : MonoBehaviour
         int i = Random.Range(1, wayPointNumber);
         wayPointCounter = 0;
         investigatePriority++;
+        walkPointSet = true;
 
         if (i == 1)
         {
@@ -293,18 +295,28 @@ public class EnemyAIScript : MonoBehaviour
     }
     private void SearchWalkPoint()
     {
+        EquipGun(false);
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y + 1, transform.position.z + randomZ);
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y + 5, transform.position.z + randomZ);
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        if (Physics.Raycast(walkPoint, -transform.up, 3f, isGround) && distanceToWalkPoint.magnitude > walkPointRange * 0.75f)
+        int i = 0;
+        while (i <= 10)
         {
-            walkPointSet = true;
+            i++;
+            if (Physics.Raycast(walkPoint, -transform.up, 1f, isGround) && distanceToWalkPoint.magnitude > walkPointRange * 0.75f)
+            {
+                walkPointSet = true;
+                break;
+            }
+            else
+            {
+                walkPoint = new Vector3(walkPoint.x, walkPoint.y - 1, walkPoint.z);
+            }
         }
-        EquipGun(false);
     }
 
     private void ChasePlayer()
