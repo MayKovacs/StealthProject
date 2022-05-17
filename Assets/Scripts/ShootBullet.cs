@@ -8,6 +8,7 @@ public class ShootBullet : MonoBehaviour
     public GameObject gunTip;
     public FirstPersonController player;
     public EnemyAIScript enemy;
+    public AudioSource gunshotSound;
 
     // Adjusting
     public float gunSpreadRange, shotDistance;
@@ -23,6 +24,9 @@ public class ShootBullet : MonoBehaviour
 
     public void Shoot()
     {
+        gunshotSound.pitch = 1 + Random.Range(-0.05f, 0.05f);
+        gunshotSound.Play();
+
         RaycastHit hit;
         Vector3 gunAccuracy = gunTip.transform.forward;
 
@@ -34,7 +38,6 @@ public class ShootBullet : MonoBehaviour
         if (hit.collider != null && hit.collider.gameObject.tag == "Player")
         {
             PlayerTakeDamage();
-            // Debug.Log("PlayerHurt");
         }
     }
 
@@ -47,7 +50,7 @@ public class ShootBullet : MonoBehaviour
         else
         {
             player.health -= 5;
-            Debug.LogError("The player took damage from a gun, but no enemy was attached to this gun");
+            Debug.LogError("The player took damage from a gun, but no enemy damage was attached to this gun");
         }
     }
 }

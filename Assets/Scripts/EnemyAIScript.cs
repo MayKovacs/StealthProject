@@ -144,7 +144,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private void AlertMode()
     {
-        agent.speed = 2.5f;
+        agent.speed = 3f;
         agent.angularSpeed = 200;
         waitTime = 5;
         walkPointRange = 7.5f;
@@ -153,11 +153,12 @@ public class EnemyAIScript : MonoBehaviour
 
     private void IntenseMode()
     {
-        agent.speed = 3;
-        agent.angularSpeed = 220;
-        waitTime = 3;
-        walkPointRange = 5;
+        agent.speed = 3.5f;
+        agent.angularSpeed = 240;
+        waitTime = 2;
+        walkPointRange = 6;
         footStepSoundSpeedup = 2f;
+        EquipGun(true);
     }
 
     private void Patrolling()
@@ -189,7 +190,7 @@ public class EnemyAIScript : MonoBehaviour
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        if (distanceToWalkPoint.magnitude < 1)
+        if (distanceToWalkPoint.magnitude < 1.5f)
         {
             reachedWalkPoint = true;
         }
@@ -227,7 +228,7 @@ public class EnemyAIScript : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Couldn't find a waypoint");
+            Debug.LogError("Couldn't find a waypoint. Enemy needs at least one waypoint");
         }
     }
 
@@ -295,15 +296,14 @@ public class EnemyAIScript : MonoBehaviour
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-        walkPoint = new Vector3(transform.position.x + randomX, 1, transform.position.z + randomZ);
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y + 1, transform.position.z + randomZ);
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, isGround) && distanceToWalkPoint.magnitude > walkPointRange / 2)
+        if (Physics.Raycast(walkPoint, -transform.up, 3f, isGround) && distanceToWalkPoint.magnitude > walkPointRange * 0.75f)
         {
             walkPointSet = true;
         }
-        // Debug.Log("Finding a new random point");
         EquipGun(false);
     }
 
@@ -333,7 +333,9 @@ public class EnemyAIScript : MonoBehaviour
     {
         EquipGun(true);
         enemyGun.transform.LookAt(player.transform);
-        if (gunShotTimer <= 0)
+        RaycastHit hit;
+        Physics.Linecast(enemyGun.transform.position, player.transform.position, out hit);
+        if (gunShotTimer <= 0 && hit.collider.tag == "Player")
         {
             ShootGun();
             gunShotTimer = gunRateOfFire;
@@ -361,7 +363,6 @@ public class EnemyAIScript : MonoBehaviour
     private void ShootGun()
     {
         enemyGun.GetComponent<ShootBullet>().Shoot();
-        // Debug.Log("ShotBullet");
     }
 
     private void Footsteps()
