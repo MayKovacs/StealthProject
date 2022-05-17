@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
     // Need Assigning
-    public GameObject gunTip;
+    public GameObject gunTip, enemyListener;
     public FirstPersonController player;
     public EnemyAIScript enemy;
     public AudioSource gunshotSound;
@@ -14,7 +14,7 @@ public class ShootBullet : MonoBehaviour
     public float gunSpreadRange, shotDistance;
 
     // Private
-
+    private float timer;
 
     private void Awake()
     {
@@ -22,8 +22,25 @@ public class ShootBullet : MonoBehaviour
         enemy = GetComponentInParent<EnemyAIScript>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && enemy == null)
+        {
+            Shoot();
+        }
+
+        timer -= Time.deltaTime;
+        if (timer <= 0)
+        {
+            enemyListener.SetActive(false);
+        }
+    }
+
     public void Shoot()
     {
+        timer = 0.05f;
+        enemyListener.SetActive(true);
+
         gunshotSound.pitch = 1 + Random.Range(-0.05f, 0.05f);
         gunshotSound.Play();
 
@@ -50,7 +67,8 @@ public class ShootBullet : MonoBehaviour
         else
         {
             player.health -= 5;
-            Debug.LogError("The player took damage from a gun, but no enemy damage was attached to this gun");
+            Debug.LogError("The player took damage from a gun, but no enemy was attached to this gun");
         }
+        player.Hurt();
     }
 }

@@ -23,13 +23,15 @@ public class FirstPersonController : MonoBehaviour
     public float cloakDuration = 8;
     public float cloakBufferRegenTime = 4;
     public float cloakRegenSpeed = 0.5f;
+    public float timeToRegen = 10;
+    public float healthRegenRate = 3;
 
     // Variables that need accesing
     public bool cloaked;
     public float health;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer;
     private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning;
     private Animator crouchAnimator;
 
@@ -75,7 +77,7 @@ public class FirstPersonController : MonoBehaviour
         {
             Application.Quit();
         }
-        healthMeter.value = health;
+        HealthRegen();
         BloodEffect();
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -394,6 +396,26 @@ public class FirstPersonController : MonoBehaviour
     {
         float alpha = 1 - health / 100;
         bloodEffect.color = new Color (255,255,255,alpha);
+    }
+
+    public void Hurt()
+    {
+        hurtTimer = timeToRegen;
+    }
+
+    private void HealthRegen()
+    {
+        hurtTimer -= Time.deltaTime;
+        if (hurtTimer < 0)
+        {
+            hurtTimer = 0;
+            health += Time.deltaTime * healthRegenRate;
+            if (health > 100)
+            {
+                health = 100;
+            }
+        }
+        healthMeter.value = health;
     }
 
     private void FootSteps()

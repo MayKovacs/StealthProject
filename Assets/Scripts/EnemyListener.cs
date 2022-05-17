@@ -31,12 +31,4 @@ public class EnemyListener : MonoBehaviour
             }
         }
     }
-
-    /*private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Enemy")
-        {
-            other.gameObject.GetComponent<EnemyAIScript>().InvestigatePoint(this.transform.position);
-        }
-    }*/
 }
