@@ -14,8 +14,7 @@ public class EnemyAIScript : MonoBehaviour
     public AudioSource audioSource;
 
     // Variables that need adjusting
-    public float intenseChaseTime = 15;
-    public float alertModeTime = 60;
+    public float attentionSpan = 150;
     public float waitTime = 5;
     public float walkPointRange = 5;
     public float attackRange = 5;
@@ -26,8 +25,8 @@ public class EnemyAIScript : MonoBehaviour
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
     [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer;
-    [SerializeField] private float currentWaitTime, intenseModeTimer, alertModeTimer, gunShotTimer, footStepTimer, footStepSoundSpeedup;
-    [SerializeField] private int wayPointNumber, wayPointCounter;
+    [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel;
+    [SerializeField] private int wayPointNumber, wayPointCounter, investigatePriority;
 
     private void Awake()
     {
@@ -35,6 +34,9 @@ public class EnemyAIScript : MonoBehaviour
         player = GameObject.Find("Player");
         enemyEyes = this.transform.Find("EnemyHead/EnemyEyes");
         agent = GetComponent<NavMeshAgent>();
+        gunShotTimer = gunRateOfFire;
+        footStepTimer = 0.8f;
+        investigatePriority = 10;
 
         // Begins AI in casual mode;
         CasualMode();
@@ -53,53 +55,15 @@ public class EnemyAIScript : MonoBehaviour
                 }
             }
         }
-        gunShotTimer = gunRateOfFire;
-        footStepTimer = 0.8f;
     }
 
 
     private void Update()
     {
-        if (intenseModeTimer > 0)
-        {
-            intenseModeTimer -= Time.deltaTime;
-        }
-        else if (alertModeTimer > 0)
-        {
-            alertModeTimer -= Time.deltaTime;
-        }
+        EnemyVision();
+        SusLevel();
 
-        if (intenseModeTimer < 0)
-        {
-            AlertMode();
-        }
-        if (alertModeTimer < 0 && currentWaitTime <= 1)
-        {
-            CasualMode();
-        }
-
-        // Draws a linecast to see if the enemy has a line of sight to the player
-        Debug.DrawLine(enemyEyes.transform.position, player.transform.position);
-        Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
-        if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
-        {
-            // Debug.Log("I see you");
-            seePlayer = true;
-        }
-        else
-        {
-            seePlayer = false;
-        }
-
-
-        if (chasingPlayer && !seePlayer)
-        {
-            chasingPlayer = false;
-            lastKnownPlayerPosition = player.transform.position;
-            InvestigatePoint(lastKnownPlayerPosition);
-            // Debug.Log("lost you, investigating your last known position.");
-        }
-
+        // Main behaviour branch
         if (seePlayer)
         {
             ChasePlayer();
@@ -118,16 +82,63 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
+    private void EnemyVision()
+    {
+        // Draws a linecast to see if the enemy has a direct line of sight to the player
+        Debug.DrawLine(enemyEyes.transform.position, player.transform.position);
+        Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
+        if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
+        {
+            seePlayer = true;
+            susLevel = attentionSpan;
+        }
+        else
+        {
+            seePlayer = false;
+            // Suspicion decreases as long as the enemy does not have a line of sight to the player
+            susLevel -= Time.deltaTime;
+        }
+        // Triggers if enemy loses sight of the player during chase
+        if (chasingPlayer && !seePlayer)
+        {
+            chasingPlayer = false;
+            lastKnownPlayerPosition = player.transform.position;
+            InvestigatePointPriorityOne(lastKnownPlayerPosition);
+        }
+    }
+    private void SusLevel()
+    {
+        // Keeps susLevel between valid numbers
+        if (susLevel < 0)
+        {
+            susLevel = 0;
+        }
+        else if (susLevel > attentionSpan)
+        {
+            susLevel = attentionSpan;
+        }
+
+        // Changes the movement speed of the enemy based on suspicion
+        if (susLevel < 30)
+        {
+            CasualMode();
+        }
+        else if (susLevel >= attentionSpan - attentionSpan / 8)
+        {
+            IntenseMode();
+        }
+        else
+        {
+            AlertMode();
+        }
+    }
+
     private void CasualMode()
     {
         agent.speed = 2;
         agent.angularSpeed = 140;
         waitTime = 8;
-        walkPointRange = 5;
-
-        alertModeTimer = 0;
-        intenseModeTimer = 0;
-
+        walkPointRange = 10;
         footStepSoundSpeedup = 1;
     }
 
@@ -135,12 +146,8 @@ public class EnemyAIScript : MonoBehaviour
     {
         agent.speed = 2.5f;
         agent.angularSpeed = 200;
-        waitTime = 6;
+        waitTime = 5;
         walkPointRange = 7.5f;
-
-        intenseModeTimer = 0;
-        alertModeTimer = alertModeTime;
-
         footStepSoundSpeedup = 1.5f;
     }
 
@@ -148,13 +155,8 @@ public class EnemyAIScript : MonoBehaviour
     {
         agent.speed = 3;
         agent.angularSpeed = 220;
-        waitTime = 4;
-        currentWaitTime = waitTime;
-        walkPointRange = 10;
-
-        alertModeTimer = alertModeTime;
-        intenseModeTimer = intenseChaseTime;
-
+        waitTime = 3;
+        walkPointRange = 5;
         footStepSoundSpeedup = 2f;
     }
 
@@ -166,6 +168,7 @@ public class EnemyAIScript : MonoBehaviour
         }
         if (!walkPointSet)
         {
+            investigatePriority++;
             int i = 0;
             while (!walkPointSet)
             {
@@ -194,11 +197,6 @@ public class EnemyAIScript : MonoBehaviour
 
     private void Wait()
     {
-        if (currentWaitTime == waitTime)
-        {
-            PlayFootStep();
-        }
-            
         currentWaitTime -= Time.deltaTime;
         if (currentWaitTime <= 0)
         {
@@ -213,7 +211,7 @@ public class EnemyAIScript : MonoBehaviour
     {
         int i = Random.Range(1, wayPointNumber);
         wayPointCounter = 0;
-
+        investigatePriority++;
 
         if (i == 1)
         {
@@ -233,15 +231,65 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
-    public void InvestigatePoint(Vector3 searchPoint)
+    public void InvestigatePointPriorityOne(Vector3 searchPoint)
     {
-        // investigatingPoint = true;
+        susLevel += attentionSpan / 2;
+        investigatePriority = 1;
+        walkPointSet = true;
         reachedWalkPoint = false;
         walkPoint = searchPoint;
         wayPointCounter = 0;
-        Debug.Log("Investigating Sound");
+        Debug.Log("Investigating Prio 1 Sound");
     }
 
+    public void InvestigatePointPriorityTwo(Vector3 searchPoint)
+    {
+        susLevel += attentionSpan / 5;
+        walkPoint = searchPoint;
+        walkPointSet = true;
+        wayPointCounter = 0;
+        if (investigatePriority == 1)
+        {
+            Debug.Log("Ignoring prio 2 sound");
+            return;
+        }
+        investigatePriority = 2;
+        reachedWalkPoint = false;
+        Debug.Log("Investigating Prio 2 Sound");
+    }
+
+    public void InvestigatePointPriorityThree(Vector3 searchPoint)
+    {
+        susLevel += attentionSpan / 12;
+        walkPoint = searchPoint;
+        walkPointSet = true;
+        wayPointCounter = 0;
+        if (investigatePriority <= 2)
+        {
+            Debug.Log("Ignoring prio 3 sound");
+            return;
+        }
+        investigatePriority = 3;
+        reachedWalkPoint = false;
+
+        Debug.Log("Investigating Prio 3 Sound");
+    }
+
+    public void InvestigatePointPriorityFour(Vector3 searchPoint)
+    {
+        susLevel += attentionSpan / 20;
+        walkPoint = searchPoint;
+        walkPointSet = true;
+        wayPointCounter = 0;
+        if (investigatePriority <= 3)
+        {
+            Debug.Log("Ignoring prio 4 sound");
+            return;
+        }
+        investigatePriority = 4;
+        reachedWalkPoint = false;
+        Debug.Log("Investigating Prio 4 Sound");
+    }
     private void SearchWalkPoint()
     {
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
@@ -274,6 +322,10 @@ public class EnemyAIScript : MonoBehaviour
         if (distanceToPlayer.magnitude < closeAimRange)
         {
             Aim();
+        }
+        else
+        {
+            Footsteps();
         }
     }
 
@@ -317,8 +369,7 @@ public class EnemyAIScript : MonoBehaviour
         footStepTimer -= Time.deltaTime * footStepSoundSpeedup;
         if (footStepTimer <= 0)
         {
-            audioSource.Play();
-            footStepTimer = 0.8f;
+            PlayFootStep();
         }
     }
 

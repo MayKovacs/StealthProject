@@ -657,7 +657,7 @@ MonoBehaviour:
   wayPoint2: {fileID: 500486146679344079}
   wayPoint3: {fileID: 500486146977728265}
   audioSource: {fileID: 6995902269202084118}
-  intenseChaseTime: 15
+  intenseChaseTime: 20
   alertModeTime: 60
   waitTime: 5
   walkPointRange: 2

@@ -13,7 +13,7 @@ public class FirstPersonController : MonoBehaviour
     public GameObject invisEffect;
     public Image bloodEffect;
     public Slider cloakMeter, healthMeter;
-    public GameObject enemylistenerWalk, enemylistenerRun;
+    public GameObject enemylistenerWalk, enemylistenerRun, enemylistenerSprint;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -405,11 +405,15 @@ public class FirstPersonController : MonoBehaviour
 
         if (footStepTimer <= 0)
         {
-            if (movementMultiplier >= 1.25f)
+            if (movementMultiplier >= 2f)
+            {
+                FootStepSprint();
+            }
+            else if (movementMultiplier >= 1.5f)
             {
                 FootStepRun();
             }
-            else if (movementMultiplier >= 0.8f)
+            else if (movementMultiplier >= 1f)
             {
                 FootStepWalk();
             }
@@ -421,6 +425,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 enemylistenerRun.SetActive(false);
                 enemylistenerWalk.SetActive(false);
+                enemylistenerSprint.SetActive(false);
             }
         }
     }
@@ -437,6 +442,14 @@ public class FirstPersonController : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("Player_Footstep_Run");
         footStepTimer = 0.6f;
         enemylistenerRun.SetActive(true);
+        listenerTimer = 0.05f;
+    }
+
+    private void FootStepSprint()
+    {
+        FindObjectOfType<AudioManager>().Play("Player_Footstep_Run");
+        footStepTimer = 0.6f;
+        enemylistenerSprint.SetActive(true);
         listenerTimer = 0.05f;
     }
 
