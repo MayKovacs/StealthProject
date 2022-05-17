@@ -215,7 +215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500486146679344079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00012539326, y: 6, z: 21.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 500486147288386173}
@@ -441,6 +441,7 @@ Transform:
   - {fileID: 500486147698794273}
   - {fileID: 500486147596809927}
   - {fileID: 500486146679344078}
+  - {fileID: 6647291403283824780}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -624,7 +625,7 @@ MonoBehaviour:
     m_Bits: 64
   wayPoint1: {fileID: 500486147596809920}
   wayPoint2: {fileID: 500486146679344079}
-  wayPoint3: {fileID: 0}
+  wayPoint3: {fileID: 5641399135985155302}
   audioSource: {fileID: 6995902269202084118}
   attentionSpan: 150
   waitTime: 5
@@ -639,6 +640,7 @@ MonoBehaviour:
   reachedWalkPoint: 0
   seePlayer: 0
   chasingPlayer: 0
+  gunEquiped: 0
   currentWaitTime: 0
   gunShotTimer: 0
   footStepTimer: 0
@@ -663,6 +665,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &5641399135985155302
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6647291403283824780}
+  m_Layer: 7
+  m_Name: WayPoint3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6647291403283824780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641399135985155302}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 500486147288386173}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9107378931407187682
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,7 +738,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cb111f071b2e63844afba5ac99aceb2b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -714,7 +746,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 5.669942
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

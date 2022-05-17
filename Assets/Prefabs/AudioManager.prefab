@@ -44,9 +44,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - name: Footstep_Metal_1
-    clip: {fileID: 8300000, guid: cb111f071b2e63844afba5ac99aceb2b, type: 3}
-    volume: 1
+  - name: Player_Footstep_Walk
+    clip: {fileID: 8300000, guid: 314d37dfb74502a4094b835d0e0d6c23, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Player_Footstep_Run
+    clip: {fileID: 8300000, guid: fba95cafa5bba8649a7d269656e7317b, type: 3}
+    volume: 0.2
     pitch: 1
     loop: 0
     source: {fileID: 0}

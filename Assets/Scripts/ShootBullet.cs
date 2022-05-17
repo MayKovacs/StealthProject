@@ -26,7 +26,10 @@ public class ShootBullet : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && enemy == null)
         {
-            Shoot();
+            AudioSource[] sounds;
+            sounds = this.transform.Find("GunTip").GetComponents<AudioSource>();
+            AudioSource x = sounds[0];
+            x.Play();
         }
 
         timer -= Time.deltaTime;

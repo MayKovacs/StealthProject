@@ -91,6 +91,7 @@ public class EnemyAIScript : MonoBehaviour
         {
             seePlayer = true;
             susLevel = attentionSpan;
+            Debug.Log("Enemy Spotted Player");
         }
         else
         {

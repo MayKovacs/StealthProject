@@ -15,11 +15,11 @@ GameObject:
   - component: {fileID: 3435955667546618812}
   m_Layer: 0
   m_Name: EnemyHearSprint
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8441133348074332595
 Transform:
   m_ObjectHideFlags: 0
@@ -99,11 +99,11 @@ GameObject:
   - component: {fileID: 3533982753766162770}
   m_Layer: 0
   m_Name: EnemyHearWalk
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5046947229563435925
 Transform:
   m_ObjectHideFlags: 0
@@ -183,11 +183,11 @@ GameObject:
   - component: {fileID: 1100846723006008786}
   m_Layer: 0
   m_Name: EnemyHearRun
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8921615551681629359
 Transform:
   m_ObjectHideFlags: 0
@@ -530,6 +530,8 @@ MonoBehaviour:
   cloakDuration: 8
   cloakBufferRegenTime: 4
   cloakRegenSpeed: 0.5
+  timeToRegen: 10
+  healthRegenRate: 3
   cloaked: 0
   health: 0
 --- !u!1 &7764783461477861960
