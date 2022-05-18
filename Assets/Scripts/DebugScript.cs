@@ -6,10 +6,10 @@ public class DebugScript : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("Do Debug Thing");
-            FindObjectOfType<AudioManager>().Play("Cannon");
+            FindObjectOfType<AudioManager>().Play("VineBoomSoundEffect");
         }
     }
 }

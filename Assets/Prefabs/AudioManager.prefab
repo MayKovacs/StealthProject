@@ -56,3 +56,9 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: VineBoomSoundEffect
+    clip: {fileID: 8300000, guid: 1c4851aa62fe1b441b12ba1c34e768dc, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
