@@ -7,11 +7,11 @@ public class DebugMenu : MonoBehaviour
 {
     // Variables that need assigning
     public GameObject debugMenu;
-    public Text xSpeedText, ySpeedText, zSpeedText, isGroundedText, cloakText, cloakMeterText;
+    public Text xSpeedText, ySpeedText, zSpeedText, isGroundedText, staminaText;
 
     // Variables that need to be accessed
-    public float xSpeed, ySpeed, zSpeed, cloakCurrentDuration;
-    public bool isGrounded, cloaked;
+    public float xSpeed, ySpeed, zSpeed, stamina;
+    public bool isGrounded;
 
     // Private Variables
     private bool menuActive;
@@ -49,8 +49,7 @@ public class DebugMenu : MonoBehaviour
             ySpeedText.text = "xSpeed: " + ySpeed.ToString("F2");
             zSpeedText.text = "xSpeed: " + zSpeed.ToString("F2");
             isGroundedText.text = "isGrounded: " + isGrounded;
-            cloakText.text = "Cloak: " + cloaked;
-            cloakMeterText.text = "Cloak Meter: " + cloakCurrentDuration.ToString("F2");
+            staminaText.text = "Stamina: " + stamina.ToString("F1");
         }
     }
 }

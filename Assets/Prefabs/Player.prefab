@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3435955667546618812}
   m_Layer: 0
   m_Name: EnemyHearSprint
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 3533982753766162770}
   m_Layer: 0
   m_Name: EnemyHearWalk
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 1100846723006008786}
   m_Layer: 0
   m_Name: EnemyHearRun
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -527,6 +527,7 @@ MonoBehaviour:
   mouseSensitivity: 2
   jumpHeight: 1.5
   fallSpeed: 6
+  maxStamina: 20
   cloakDuration: 8
   cloakBufferRegenTime: 4
   cloakRegenSpeed: 0.5

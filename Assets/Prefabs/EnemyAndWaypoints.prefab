@@ -630,7 +630,7 @@ MonoBehaviour:
   attentionSpan: 150
   waitTime: 5
   walkPointRange: 2
-  attackRange: 10
+  attackRange: 50
   closeAimRange: 4
   gunDamage: 15
   gunRateOfFire: 1

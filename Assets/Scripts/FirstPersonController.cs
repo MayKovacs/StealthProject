@@ -20,6 +20,8 @@ public class FirstPersonController : MonoBehaviour
     public float mouseSensitivity = 2;
     public float jumpHeight = 1.5f;
     public float fallSpeed = 6;
+    public float maxStamina = 20;
+    public float staminaTimeToRegen = 5;
     public float cloakDuration = 8;
     public float cloakBufferRegenTime = 4;
     public float cloakRegenSpeed = 0.5f;
@@ -31,8 +33,8 @@ public class FirstPersonController : MonoBehaviour
     public float health;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer;
-    private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer, stamina, staminaRegenTimer;
+    private bool isGrounded, running, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -68,6 +70,9 @@ public class FirstPersonController : MonoBehaviour
         healthMeter = GameObject.Find("HealthMeter").GetComponent<Slider>();
 
         footStepTimer = 0.6f;
+
+        stamina = maxStamina;
+        staminaRegenTimer = staminaTimeToRegen;
     }
 
     // Update is called once per frame
@@ -93,6 +98,7 @@ public class FirstPersonController : MonoBehaviour
         }
 
         ButtonPressedCheck();
+        StaminaUse();
         MovementType();
         FirstPersonCamera();
         HorizontalMovement();
@@ -208,7 +214,7 @@ public class FirstPersonController : MonoBehaviour
         // Checks for player to run or sprint, while not crouched
         if (!crouched)
         {
-            if (pressedShift && !running)
+            if (pressedShift && !running && canRun)
             {
                 running = true;
                 // Sets timer for holding sprint
@@ -256,7 +262,7 @@ public class FirstPersonController : MonoBehaviour
         // Checks toggle for player to crouch run
         if (pressedShift && crouched)
         {
-            if (!running)
+            if (!running & canRun)
             {
                 running = true;
                 // CrouchRun Speed
@@ -281,6 +287,67 @@ public class FirstPersonController : MonoBehaviour
             running = false;
             // CrouchWalk Speed
             movementMultiplier = 0.6f;
+        }
+    }
+
+    private void StaminaUse()
+    {
+        if (movementMultiplier > 1 && stamina > 0)
+        {
+            if (movementMultiplier > 2f)
+            {
+                stamina -= Time.deltaTime * 3;
+                if (stamina < 0)
+                {
+                    stamina = 0;
+                }
+                staminaRegenTimer = staminaTimeToRegen;
+            }
+            else
+            {
+                stamina -= Time.deltaTime;
+                if (stamina < 0)
+                {
+                    stamina = 0;
+                }
+                staminaRegenTimer = staminaTimeToRegen;
+            }
+        }
+
+        if (movementMultiplier <= 1 && staminaRegenTimer > 0)
+        {
+            staminaRegenTimer -= Time.deltaTime;
+            if (staminaRegenTimer < 0)
+            {
+                staminaRegenTimer = 0;
+            }
+        }
+
+        if (stamina < maxStamina && staminaRegenTimer == 0)
+        {
+            stamina += Time.deltaTime;
+        }
+
+        if (stamina > maxStamina)
+        {
+            stamina = maxStamina;
+        }
+
+        if (stamina == 0)
+        {
+            canRun = false;
+            if (crouched)
+            {
+                movementMultiplier = 0.6f;
+            }
+            else
+            {
+                movementMultiplier = 1f;
+            }
+        }
+        else
+        {
+            canRun = true;
         }
     }
 
@@ -482,7 +549,6 @@ public class FirstPersonController : MonoBehaviour
         debugMenu.ySpeed = ySpeed;
         debugMenu.zSpeed = zSpeed * movementMultiplier;
         debugMenu.isGrounded = isGrounded;
-        debugMenu.cloaked = cloaked;
-        debugMenu.cloakCurrentDuration = cloakCurrentDuration;
+        debugMenu.stamina = stamina;
     }
 }
