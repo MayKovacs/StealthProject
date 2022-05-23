@@ -25,7 +25,7 @@ public class EnemyAIScript : MonoBehaviour
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
     [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped;
-    [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel;
+    [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel, playerVisionLevel;
     [SerializeField] private int wayPointNumber, wayPointCounter, investigatePriority;
 
     private void Awake()
@@ -89,15 +89,28 @@ public class EnemyAIScript : MonoBehaviour
         Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
         if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
         {
-            seePlayer = true;
-            susLevel = attentionSpan;
-            Debug.Log("Enemy Spotted Player");
+            playerVisionLevel += Time.deltaTime * 2;
+            if (playerVisionLevel > 1)
+            {
+                playerVisionLevel = 1;
+            }
+            if (playerVisionLevel >= 1)
+            {
+                seePlayer = true;
+                susLevel = attentionSpan;
+                //Debug.Log("Enemy Spotted Player");
+            }
         }
         else
         {
             seePlayer = false;
             // Suspicion decreases as long as the enemy does not have a line of sight to the player
             susLevel -= Time.deltaTime;
+            playerVisionLevel -= Time.deltaTime;
+            if (playerVisionLevel < 0)
+            {
+                playerVisionLevel = 0;
+            }
         }
         // Triggers if enemy loses sight of the player during chase
         if (chasingPlayer && !seePlayer)
@@ -376,7 +389,7 @@ public class EnemyAIScript : MonoBehaviour
         {
             gunEquiped = true;
             enemyGun.SetActive(true);
-            enemyGun.GetComponent<ShootBullet>().ReadySound();
+            //enemyGun.GetComponent<ShootBullet>().ReadySound();
         }
         else if (!Equip && gunEquiped)
         {

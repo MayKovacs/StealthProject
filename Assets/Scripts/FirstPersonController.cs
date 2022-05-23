@@ -200,7 +200,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Crouch()
     {
-        if (pressedCtrl)
+        if (Input.GetMouseButtonDown(1))
         {
             if (!crouched)
             {
