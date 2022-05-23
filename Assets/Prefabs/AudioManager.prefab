@@ -59,7 +59,13 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: VineBoomSoundEffect
     clip: {fileID: 8300000, guid: 1c4851aa62fe1b441b12ba1c34e768dc, type: 3}
-    volume: 0.2
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: MGS_Alert
+    clip: {fileID: 8300000, guid: 72edb489e2222194cbeebed63e3ef48c, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
