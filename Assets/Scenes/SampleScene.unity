@@ -10420,6 +10420,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5870573645867106490, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5870573645867106490, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6241650860341088280, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
+      propertyPath: m_MaxValue
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6863856192197628987, guid: bb2d1a32fde39b34eb8b8854bb19ec6c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -11086,6 +11098,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyAndWaypoints
       objectReference: {fileID: 0}
+    - target: {fileID: 500486147288386174, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 500486147698790621, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
       propertyPath: wayPoint2
       value: 
@@ -11124,7 +11140,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018963790}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc5df86b8a23f274784d1aab1db5c147, type: 3}
   m_Name: 
