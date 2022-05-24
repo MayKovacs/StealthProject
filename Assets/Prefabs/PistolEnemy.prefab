@@ -629,14 +629,14 @@ MonoBehaviour:
   alertAudioSource: {fileID: 1107058763040678929}
   player: {fileID: 0}
   agent: {fileID: 0}
-  weaponType: 1
   attentionSpan: 150
   waitTime: 5
   walkPointRange: 2
-  attackRange: 15
+  numberOfRandomSearch: 3
+  attackRange: 25
   closeAimRange: 4
   gunDamage: 15
-  gunRateOfFire: 1
+  gunRateOfFire: 0.5
   walkPoint: {x: 0, y: 0, z: 0}
   lastKnownPlayerPosition: {x: 0, y: 0, z: 0}
   walkPointSet: 0

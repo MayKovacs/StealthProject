@@ -17,10 +17,10 @@ public class EnemyAIScript : MonoBehaviour
     public NavMeshAgent agent;
 
     // Variables that need adjusting in unity
-    public int weaponType = 1;
     public float attentionSpan = 150;
     public float waitTime = 5;
     public float walkPointRange = 5;
+    public int numberOfRandomSearch = 3;
     public float attackRange = 5;
     public float closeAimRange = 2.5f;
     public float gunDamage = 5;
@@ -205,7 +205,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private void Patrolling()
     {
-        if (wayPointCounter == 3)
+        if (wayPointCounter == numberOfRandomSearch)
         {
             GoToWaypoint();
         }

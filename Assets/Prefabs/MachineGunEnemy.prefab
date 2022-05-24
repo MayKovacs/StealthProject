@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbbdef306d0a31243b1564f0b12e446f, type: 2}
+  - {fileID: 2100000, guid: fc7089fc61ebf4b4eba3184669c8f7dc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,7 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbbdef306d0a31243b1564f0b12e446f, type: 2}
+  - {fileID: 2100000, guid: f090dea901397274785d9307bc8e66e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -289,7 +289,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2864bf4a54028a545a921f33ac036788, type: 2}
+  - {fileID: 2100000, guid: fbbdef306d0a31243b1564f0b12e446f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -374,10 +374,10 @@ MonoBehaviour:
   alertAudioSource: {fileID: 2976901393801226800}
   player: {fileID: 0}
   agent: {fileID: 0}
-  weaponType: 1
   attentionSpan: 150
   waitTime: 5
   walkPointRange: 2
+  numberOfRandomSearch: 2
   attackRange: 20
   closeAimRange: 7
   gunDamage: 5
@@ -606,7 +606,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbbdef306d0a31243b1564f0b12e446f, type: 2}
+  - {fileID: 2100000, guid: f090dea901397274785d9307bc8e66e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -885,7 +885,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbbdef306d0a31243b1564f0b12e446f, type: 2}
+  - {fileID: 2100000, guid: fc7089fc61ebf4b4eba3184669c8f7dc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -967,11 +967,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3207587634268732843, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.08
+      value: 0.218
       objectReference: {fileID: 0}
     - target: {fileID: 3207587634268732843, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.781
+      value: 0.555
       objectReference: {fileID: 0}
     - target: {fileID: 3207587634268732843, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -993,10 +993,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7166576901891104747, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
-      propertyPath: gunshotSoundClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 0137a53ccdf87594aa05fdecb8784894, type: 3}
+    - target: {fileID: 5417429329747731385, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
 --- !u!1 &7097258833578076362 stripped

@@ -36,8 +36,8 @@ public class FirstPersonController : MonoBehaviour
     public bool running, sprinting;
 
     // Private Variables
-    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer, stamina, staminaRegenTimer;
-    private bool isGrounded, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun;
+    private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer, stamina, staminaRegenTimer, deathTimer;
+    private bool isGrounded, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun, dead;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -83,13 +83,23 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health <= 0)
+        if (health <= 0 && !dead)
         {
-            Destroy(this);
+            Death();
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if (dead)
+        {
+            deathTimer -= Time.deltaTime;
+            if (deathTimer <= 0)
+            {
+                FindObjectOfType<SceneManagerScript>().ReloadScene();
+            }
+            DebugMenu();
+            return;
         }
         HealthRegen();
         BloodEffect();
@@ -116,6 +126,14 @@ public class FirstPersonController : MonoBehaviour
         Movement();
         FootSteps();
         DebugMenu();
+    }
+    private void Death()
+    {
+        dead = true;
+        deathTimer = 4;
+        invisEffect.SetActive(false);
+        healthMeter.value = health;
+        BloodEffect();
     }
 
     void Movement()
