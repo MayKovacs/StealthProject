@@ -7,10 +7,10 @@ public class DebugMenu : MonoBehaviour
 {
     // Variables that need assigning
     public GameObject debugMenu;
-    public Text xSpeedText, ySpeedText, zSpeedText, isGroundedText, staminaText;
+    public Text xSpeedText, ySpeedText, zSpeedText, isGroundedText, staminaText, fpsText;
 
     // Variables that need to be accessed
-    public float xSpeed, ySpeed, zSpeed, stamina;
+    public float xSpeed, ySpeed, zSpeed, stamina, fps;
     public bool isGrounded;
 
     // Private Variables
@@ -24,6 +24,7 @@ public class DebugMenu : MonoBehaviour
 
     void Update()
     {
+        fps = 1 / Time.unscaledDeltaTime;
         // Checks if the letters O and P are pressed
         if (Input.GetKey("o") == true && Input.GetKeyDown("p") == true ||
             Input.GetKeyDown("o") == true && Input.GetKey("p") == true)
@@ -50,6 +51,7 @@ public class DebugMenu : MonoBehaviour
             zSpeedText.text = "xSpeed: " + zSpeed.ToString("F2");
             isGroundedText.text = "isGrounded: " + isGrounded;
             staminaText.text = "Stamina: " + stamina.ToString("F1");
+            fpsText.text = "Fps: " + fps.ToString("F0");
         }
     }
 }

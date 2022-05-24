@@ -172,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444709, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.594
+      value: -2.43
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444709, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444709, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.6499996
+      value: -7.11
       objectReference: {fileID: 0}
     - target: {fileID: 7764783461464444709, guid: 894ae741ad14f164a9199ad8aecac77f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7179,6 +7179,10 @@ PrefabInstance:
       propertyPath: attackRange
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1107058763040678929, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6995902269202084118, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
       propertyPath: DopplerLevel
       value: 1
@@ -11095,12 +11099,12 @@ GameObject:
   - component: {fileID: 1972959222}
   - component: {fileID: 1972959221}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: DebugCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1972959221
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11239,7 +11243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 500486147288386174, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 500486147698790621, guid: 80bad6a3329d253419e9c86296287bfb, type: 3}
       propertyPath: wayPoint2

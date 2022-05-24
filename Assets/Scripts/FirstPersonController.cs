@@ -106,17 +106,18 @@ public class FirstPersonController : MonoBehaviour
             CloakDeactive();
         }
 
+        FirstPersonCamera();
         ButtonPressedCheck();
         StaminaUse();
         Crouch();
         Sprinting();
-        FirstPersonCamera();
         HorizontalMovement();
         VerticalMovement();
         Movement();
         FootSteps();
         DebugMenu();
     }
+
     void Movement()
     {
         // Sets move as a Vector 3 to gather all speeds into one variable
@@ -276,7 +277,7 @@ public class FirstPersonController : MonoBehaviour
             }
             else
             {
-                movementMultiplier = 1.25f;
+                movementMultiplier = 1.1f;
             }
         }
         else
@@ -477,7 +478,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void FootStepSprint()
     {
-        FindObjectOfType<AudioManager>().Play("Player_Footstep_Run");
+        FindObjectOfType<AudioManager>().Play("Player_Footstep_Sprint");
         footStepTimer = 0.6f;
         enemylistenerSprint.SetActive(true);
         listenerTimer = 0.05f;

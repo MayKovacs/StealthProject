@@ -5,15 +5,18 @@ using UnityEngine.AI;
 
 public class EnemyAIScript : MonoBehaviour
 {
-    // Variables that need to be assigned
-    public GameObject player, enemyGun;
+    // Variables that need to be assigned in Unity
+    public GameObject enemyGun;
     public Transform enemyEyes;
-    public NavMeshAgent agent;
     public LayerMask isGround, isPlayer;
     public GameObject wayPoint1, wayPoint2, wayPoint3;
-    public AudioSource audioSource;
+    public AudioSource footstepAudioSource, alertAudioSource;
 
-    // Variables that need adjusting
+    // Variables assigned in script
+    public GameObject player;
+    public NavMeshAgent agent;
+
+    // Variables that need adjusting in unity
     public float attentionSpan = 150;
     public float waitTime = 5;
     public float walkPointRange = 5;
@@ -24,7 +27,7 @@ public class EnemyAIScript : MonoBehaviour
 
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
-    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped;
+    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped, spottedPlayer;
     [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel, playerVisionLevel;
     [SerializeField] private int wayPointNumber, wayPointCounter, investigatePriority;
 
@@ -98,7 +101,13 @@ public class EnemyAIScript : MonoBehaviour
             {
                 seePlayer = true;
                 susLevel = attentionSpan;
-                //Debug.Log("Enemy Spotted Player");
+                if (!spottedPlayer)
+                {
+                    spottedPlayer = true;
+                    Debug.Log("Enemy Spotted Player");
+                    alertAudioSource.Play();
+                }
+                
             }
         }
         else
@@ -110,6 +119,10 @@ public class EnemyAIScript : MonoBehaviour
             if (playerVisionLevel < 0)
             {
                 playerVisionLevel = 0;
+                if (susLevel < attentionSpan - attentionSpan / 8)
+                {
+                    spottedPlayer = false;
+                }
             }
         }
         // Triggers if enemy loses sight of the player during chase
@@ -414,7 +427,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private void PlayFootStep()
     {
-        audioSource.Play();
+        footstepAudioSource.Play();
         footStepTimer = 0.8f;
     }
 }

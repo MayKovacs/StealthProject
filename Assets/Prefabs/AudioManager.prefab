@@ -47,7 +47,7 @@ MonoBehaviour:
   sounds:
   - name: Player_Footstep_Walk
     clip: {fileID: 8300000, guid: 314d37dfb74502a4094b835d0e0d6c23, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -66,6 +66,12 @@ MonoBehaviour:
   - name: MGS_Alert
     clip: {fileID: 8300000, guid: 72edb489e2222194cbeebed63e3ef48c, type: 3}
     volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Player_Footstep_Sprint
+    clip: {fileID: 8300000, guid: fba95cafa5bba8649a7d269656e7317b, type: 3}
+    volume: 0.25
     pitch: 1
     loop: 0
     source: {fileID: 0}
