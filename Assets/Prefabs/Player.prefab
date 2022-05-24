@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 7764783461464444762}
   - component: {fileID: 7764783461464444761}
   - component: {fileID: 7764783461464444760}
+  - component: {fileID: 3732783301885826609}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -530,15 +531,33 @@ MonoBehaviour:
   fallSpeed: 6
   maxStamina: 10
   staminaTimeToRegen: 2.5
-  cloakDuration: 8
+  cloakDuration: 20
   cloakBufferRegenTime: 4
-  cloakRegenSpeed: 0.5
+  cloakRegenSpeed: 2
   timeToRegen: 10
   healthRegenRate: 3
   cloaked: 0
+  dead: 0
   health: 0
-  running: 0
-  sprinting: 0
+--- !u!95 &3732783301885826609
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7764783461464444766}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d8ec17117b99c8e4a8acfadb3d2af319, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7764783461477861960
 GameObject:
   m_ObjectHideFlags: 0

@@ -100,7 +100,7 @@ public class FirstPersonController : MonoBehaviour
         }
         HealthRegen();
         BloodEffect();
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
             Cloak();
         }
@@ -115,7 +115,7 @@ public class FirstPersonController : MonoBehaviour
 
         FirstPersonCamera();
         ButtonPressedCheck();
-        StaminaUse();
+        Stamina();
         Crouch();
         Sprinting();
         HorizontalMovement();
@@ -314,8 +314,9 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
-    private void StaminaUse()
+    private void Stamina()
     {
+        // Stamina Use for sprinting and running
         if (movementMultiplier > 1 && stamina > 0)
         {
             if (sprinting)
@@ -338,6 +339,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
+        // Stamina Regen Timer
         if (!running && !sprinting && staminaRegenTimer > 0)
         {
             staminaRegenTimer -= Time.deltaTime;
@@ -346,16 +348,23 @@ public class FirstPersonController : MonoBehaviour
                 staminaRegenTimer = 0;
             }
         }
-
+        // Stamina Regeneration
         if (stamina < maxStamina && staminaRegenTimer == 0)
         {
-            stamina += Time.deltaTime;
+            if (!moving)
+            {
+                stamina += Time.deltaTime * 2;
+            }
+            else
+            {
+                stamina += Time.deltaTime;
+            }
+            if (stamina > maxStamina)
+            {
+                stamina = maxStamina;
+            }
         }
 
-        if (stamina > maxStamina)
-        {
-            stamina = maxStamina;
-        }
 
         if (stamina == 0)
         {
@@ -398,7 +407,18 @@ public class FirstPersonController : MonoBehaviour
 
     private void CloakActive()
     {
-        cloakCurrentDuration -= Time.deltaTime;
+        float movementValue = Mathf.Abs(xSpeed * movementMultiplier) + Mathf.Abs(zSpeed * movementMultiplier);
+        cloakCurrentDuration -= Time.deltaTime * movementValue;
+        if (movementValue < 1.2f)
+        {
+            cloakCurrentDuration -= Time.deltaTime * 1.2f;
+        }
+        else
+        {
+            cloakCurrentDuration -= Time.deltaTime * movementValue;
+        }
+
+
         if (cloakCurrentDuration <= 0)
         {
             cloakCurrentDuration = 0;
