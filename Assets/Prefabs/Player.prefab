@@ -493,7 +493,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5000001
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -520,6 +520,7 @@ MonoBehaviour:
   bloodEffect: {fileID: 0}
   cloakMeter: {fileID: 0}
   healthMeter: {fileID: 0}
+  staminaMeter: {fileID: 0}
   enemylistenerWalk: {fileID: 3612763767048408334}
   enemylistenerRun: {fileID: 5366754929061690724}
   enemylistenerSprint: {fileID: 2711676075017998699}
@@ -527,7 +528,8 @@ MonoBehaviour:
   mouseSensitivity: 2
   jumpHeight: 1.5
   fallSpeed: 6
-  maxStamina: 20
+  maxStamina: 10
+  staminaTimeToRegen: 2.5
   cloakDuration: 8
   cloakBufferRegenTime: 4
   cloakRegenSpeed: 0.5
@@ -535,6 +537,8 @@ MonoBehaviour:
   healthRegenRate: 3
   cloaked: 0
   health: 0
+  running: 0
+  sprinting: 0
 --- !u!1 &7764783461477861960
 GameObject:
   m_ObjectHideFlags: 0

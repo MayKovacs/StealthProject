@@ -17,6 +17,7 @@ public class EnemyAIScript : MonoBehaviour
     public NavMeshAgent agent;
 
     // Variables that need adjusting in unity
+    public int weaponType = 1;
     public float attentionSpan = 150;
     public float waitTime = 5;
     public float walkPointRange = 5;

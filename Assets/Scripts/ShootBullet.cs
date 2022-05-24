@@ -36,7 +36,7 @@ public class ShootBullet : MonoBehaviour
         if (timer <= 0)
         {
             enemyShotListener.SetActive(false);
-            enemyGunListener.SetActive(false);
+            //enemyGunListener.SetActive(false);
         }
     }
 

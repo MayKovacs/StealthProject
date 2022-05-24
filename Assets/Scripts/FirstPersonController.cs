@@ -264,19 +264,22 @@ public class FirstPersonController : MonoBehaviour
             running = false;
         }
 
-        // Movement Speed
+                                        // Movement Speed //
         if (sprinting && !crouched)
         {
-            movementMultiplier = 2.5f;
+            // Sprinting
+            movementMultiplier = 2.2f;
         }
         else if (running)
         {
             if (!crouched)
             {
-                movementMultiplier = 1.5f;
+                // Running
+                movementMultiplier = 1.4f;
             }
             else
             {
+                // Crouch Running
                 movementMultiplier = 1.1f;
             }
         }
@@ -284,10 +287,12 @@ public class FirstPersonController : MonoBehaviour
         {
             if (!crouched)
             {
+                // Walking
                 movementMultiplier = 1;
             }
             else
             {
+                // Crouch Walking
                 movementMultiplier = 0.6f;
             }
         }
@@ -297,9 +302,9 @@ public class FirstPersonController : MonoBehaviour
     {
         if (movementMultiplier > 1 && stamina > 0)
         {
-            if (movementMultiplier > 2f)
+            if (sprinting)
             {
-                stamina -= Time.deltaTime * 3;
+                stamina -= Time.deltaTime * 2.5f;
                 if (stamina < 0)
                 {
                     stamina = 0;
@@ -317,7 +322,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        if (movementMultiplier <= 1 && staminaRegenTimer > 0)
+        if (!running && !sprinting && staminaRegenTimer > 0)
         {
             staminaRegenTimer -= Time.deltaTime;
             if (staminaRegenTimer < 0)
