@@ -29,15 +29,12 @@ public class FirstPersonController : MonoBehaviour
     public float healthRegenRate = 3;
 
     // Variables that need accesing
-    public bool cloaked;
+    public bool cloaked, dead;
     public float health;
-
-    // Temp public variables
-    public bool running, sprinting;
 
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer, stamina, staminaRegenTimer, deathTimer;
-    private bool isGrounded, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun, dead;
+    private bool isGrounded, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun, running, sprinting;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -134,6 +131,7 @@ public class FirstPersonController : MonoBehaviour
         invisEffect.SetActive(false);
         healthMeter.value = health;
         BloodEffect();
+        playerCamera.transform.Rotate(0, 0, -20);
     }
 
     void Movement()

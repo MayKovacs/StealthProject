@@ -91,9 +91,9 @@ public class EnemyAIScript : MonoBehaviour
         // Draws a linecast to see if the enemy has a direct line of sight to the player
         Debug.DrawLine(enemyEyes.transform.position, player.transform.position);
         Physics.Linecast(enemyEyes.transform.position, player.transform.position, out RaycastHit hitInfo);
-        if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && player.GetComponent<FirstPersonController>().cloaked == false)
+        if (hitInfo.collider != null && hitInfo.collider.tag == "Player" && !player.GetComponent<FirstPersonController>().cloaked && !FindObjectOfType<FirstPersonController>().dead)
         {
-            playerVisionLevel += Time.deltaTime * 2;
+            playerVisionLevel += Time.deltaTime * 4;
             if (playerVisionLevel > 1)
             {
                 playerVisionLevel = 1;
