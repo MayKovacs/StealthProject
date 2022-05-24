@@ -9,6 +9,7 @@ public class ShootBullet : MonoBehaviour
     public FirstPersonController player;
     public EnemyAIScript enemy;
     public AudioSource gunshotSound;
+    public AudioClip gunshotSoundClip;
 
     // Adjusting
     public float gunSpreadRange, shotDistance;
@@ -52,7 +53,7 @@ public class ShootBullet : MonoBehaviour
         enemyShotListener.SetActive(true);
 
         gunshotSound.pitch = 1 + Random.Range(-0.05f, 0.05f);
-        gunshotSound.Play();
+        gunshotSound.PlayOneShot(gunshotSoundClip, 1);
 
         RaycastHit hit;
         Vector3 gunAccuracy = gunTip.transform.forward;

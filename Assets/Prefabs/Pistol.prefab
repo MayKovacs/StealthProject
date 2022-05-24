@@ -233,6 +233,7 @@ MonoBehaviour:
   player: {fileID: 0}
   enemy: {fileID: 0}
   gunshotSound: {fileID: 132384389990314453}
+  gunshotSoundClip: {fileID: 8300000, guid: 0137a53ccdf87594aa05fdecb8784894, type: 3}
   gunSpreadRange: 0.035
   shotDistance: 100
 --- !u!1 &8059574795689796963
