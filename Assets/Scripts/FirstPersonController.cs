@@ -34,7 +34,7 @@ public class FirstPersonController : MonoBehaviour
 
     // Private Variables
     private float xSpeed, ySpeed, zSpeed, mouseX, mouseY, stepOffset, sprintTimer, movementMultiplier, cloakCurrentDuration, cloakRegenTimer, footStepTimer, listenerTimer, hurtTimer, stamina, staminaRegenTimer, deathTimer;
-    private bool isGrounded, pressedShift, releasedShift, bool1, bool2, bool3, crouched, pressedCtrl, moving, pressedSpace, startedRunning, canRun, running, sprinting;
+    private bool isGrounded, pressedShift, releasedShift, bool1, bool3, crouched, moving, pressedSpace, startedRunning, running, sprinting;
     private Animator crouchAnimator;
 
     // Start is called before the first frame update
@@ -364,25 +364,6 @@ public class FirstPersonController : MonoBehaviour
                 stamina = maxStamina;
             }
         }
-
-
-        if (stamina == 0)
-        {
-            canRun = false;
-            if (crouched)
-            {
-                movementMultiplier = 0.6f;
-            }
-            else
-            {
-                movementMultiplier = 1f;
-            }
-        }
-        else
-        {
-            canRun = true;
-        }
-
         staminaMeter.value = stamina;
     }
 
@@ -559,24 +540,6 @@ public class FirstPersonController : MonoBehaviour
         else
         {
             releasedShift = false;
-        }
-
-        // Checks if the player has pressed run
-        if (Input.GetAxis("Fire1") != 0)
-        {
-            if (!bool2)
-            {
-                pressedCtrl = true;
-                bool2 = true;
-            }
-            else
-            {
-                pressedCtrl = false;
-            }
-        }
-        else
-        {
-            bool2 = false;
         }
 
         // Checks if the player has pressed space

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAIScript : MonoBehaviour
 {
     // Variables that need to be assigned in Unity
-    public GameObject enemyGun;
+    public GameObject enemyGun, gunTip;
     public Transform enemyEyes;
     public LayerMask isGround, isPlayer;
     public GameObject wayPoint1, wayPoint2, wayPoint3;
@@ -382,8 +382,7 @@ public class EnemyAIScript : MonoBehaviour
     private void AttackPlayer()
     {
         enemyGun.transform.LookAt(player.transform);
-        RaycastHit hit;
-        Physics.Linecast(enemyGun.transform.position, player.transform.position, out hit);
+        Physics.Linecast(enemyGun.transform.position, player.transform.position, out RaycastHit hit);
         if (gunShotTimer <= 0 && hit.collider.tag == "Player")
         {
             ShootGun();

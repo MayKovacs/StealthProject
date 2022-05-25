@@ -7,7 +7,7 @@ public class EnemyListener : MonoBehaviour
     public int priorityLevel;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Enemy")
+        if (other.tag == "Enemy" && other.gameObject.GetComponent<EnemyAIScript>() != null)
         {
             if (priorityLevel == 1)
             {

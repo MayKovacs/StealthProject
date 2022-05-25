@@ -8,6 +8,7 @@ public class ShootBullet : MonoBehaviour
     public GameObject gunTip, enemyShotListener, enemyGunListener;
     public FirstPersonController player;
     public EnemyAIScript enemy;
+    public TutorialEnemy tutorialEnemy;
     public AudioSource gunshotSound;
     public AudioClip gunshotSoundClip;
 
@@ -21,6 +22,10 @@ public class ShootBullet : MonoBehaviour
     {
         player = FindObjectOfType<FirstPersonController>();
         enemy = GetComponentInParent<EnemyAIScript>();
+        if (enemy == null)
+        {
+            tutorialEnemy = GetComponentInParent<TutorialEnemy>();
+        }
     }
 
     private void Update()
@@ -74,6 +79,10 @@ public class ShootBullet : MonoBehaviour
         if (enemy != null)
         {
             player.health -= enemy.gunDamage;
+        }
+        else if (tutorialEnemy != null)
+        {
+            player.health -= tutorialEnemy.gunDamage;
         }
         else
         {
