@@ -615,6 +615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyGun: {fileID: 255090046504601113}
+  gunTip: {fileID: 4268920106242310455}
   enemyEyes: {fileID: 500486146861658502}
   isGround:
     serializedVersion: 2
@@ -1003,5 +1004,10 @@ GameObject:
 --- !u!4 &5190736679635611445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1059393355935328600, guid: 5ea2ce9681f1797469eff31ecbc79f0f, type: 3}
+  m_PrefabInstance: {fileID: 5096538927299970669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4268920106242310455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9044577284911187802, guid: 5ea2ce9681f1797469eff31ecbc79f0f, type: 3}
   m_PrefabInstance: {fileID: 5096538927299970669}
   m_PrefabAsset: {fileID: 0}

@@ -381,8 +381,8 @@ public class EnemyAIScript : MonoBehaviour
 
     private void AttackPlayer()
     {
-        enemyGun.transform.LookAt(player.transform);
-        Physics.Linecast(enemyGun.transform.position, player.transform.position, out RaycastHit hit);
+        gunTip.transform.LookAt(player.transform);
+        Physics.Linecast(gunTip.transform.position, player.transform.position, out RaycastHit hit);
         if (gunShotTimer <= 0 && hit.collider.tag == "Player")
         {
             ShootGun();

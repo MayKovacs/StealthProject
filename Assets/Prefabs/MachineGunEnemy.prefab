@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyGun: {fileID: 7097258833578076362}
+  gunTip: {fileID: 2713993416320445120}
   enemyEyes: {fileID: 2976901393365527081}
   isGround:
     serializedVersion: 2
@@ -1007,5 +1008,10 @@ GameObject:
 --- !u!4 &419881495508563672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3207587634268732843, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
+  m_PrefabInstance: {fileID: 2976901394072193907}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2713993416320445120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 935093589527929267, guid: 3d66b15ecde348a4b9b0504686275d3f, type: 3}
   m_PrefabInstance: {fileID: 2976901394072193907}
   m_PrefabAsset: {fileID: 0}
