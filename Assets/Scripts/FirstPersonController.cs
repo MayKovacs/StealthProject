@@ -13,7 +13,7 @@ public class FirstPersonController : MonoBehaviour
     public GameObject invisEffect;
     public Image bloodEffect;
     public Slider cloakMeter, healthMeter, staminaMeter;
-    public GameObject enemylistenerWalk, enemylistenerRun, enemylistenerSprint;
+    public GameObject enemylistenerWalk, enemylistenerRun, enemylistenerSprint, pauseMenu, UIObject;
 
     // Variables that need adjusting
     public float walkingSpeed = 3;
@@ -29,7 +29,7 @@ public class FirstPersonController : MonoBehaviour
     public float healthRegenRate = 3;
 
     // Variables that need accesing
-    public bool cloaked, dead;
+    public bool cloaked, dead, paused;
     public float health;
 
     // Private Variables
@@ -75,6 +75,11 @@ public class FirstPersonController : MonoBehaviour
         staminaRegenTimer = staminaTimeToRegen;
         staminaMeter = GameObject.Find("StaminaMeter").GetComponent<Slider>();
         staminaMeter.maxValue = maxStamina;
+
+        pauseMenu = GameObject.Find("Canvas/PauseMenu");
+        pauseMenu.SetActive(false);
+
+        UIObject = GameObject.Find("Canvas/UI");
     }
 
     // Update is called once per frame
@@ -83,10 +88,6 @@ public class FirstPersonController : MonoBehaviour
         if (health <= 0 && !dead)
         {
             Death();
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
         }
         if (dead)
         {
@@ -98,9 +99,20 @@ public class FirstPersonController : MonoBehaviour
             DebugMenu();
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            paused = !paused;
+            Pause(paused);
+        }
+        if (paused)
+        {
+            return;
+        }
+
         HealthRegen();
         BloodEffect();
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && cloakCurrentDuration > 0)
         {
             Cloak();
         }
@@ -134,6 +146,28 @@ public class FirstPersonController : MonoBehaviour
         playerCamera.transform.Rotate(0, 0, -20);
     }
 
+    public void Pause(bool paused)
+    {
+        if (paused)
+        {
+            Time.timeScale = 0;
+            pauseMenu.SetActive(true);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            UIObject.SetActive(false);
+            AudioListener.pause = true;
+        }
+        else
+        {
+            Time.timeScale = 1;
+            pauseMenu.SetActive(false);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            UIObject.SetActive(true);
+            AudioListener.pause = false;
+        }
+
+    }
     void Movement()
     {
         // Sets move as a Vector 3 to gather all speeds into one variable
@@ -390,13 +424,13 @@ public class FirstPersonController : MonoBehaviour
     {
         float movementValue = Mathf.Abs(xSpeed * movementMultiplier) + Mathf.Abs(zSpeed * movementMultiplier);
         cloakCurrentDuration -= Time.deltaTime * movementValue;
-        if (movementValue < 1.2f)
+        if (movementValue < 0.85f)
         {
-            cloakCurrentDuration -= Time.deltaTime * 1.2f;
+            cloakCurrentDuration -= Time.deltaTime * 0.85f;
         }
         else
         {
-            cloakCurrentDuration -= Time.deltaTime * movementValue;
+            cloakCurrentDuration -= Time.deltaTime * movementValue / 2;
         }
 
 

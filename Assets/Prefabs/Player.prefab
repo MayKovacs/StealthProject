@@ -532,7 +532,7 @@ MonoBehaviour:
   maxStamina: 10
   staminaTimeToRegen: 2.5
   cloakDuration: 20
-  cloakBufferRegenTime: 4
+  cloakBufferRegenTime: 2.5
   cloakRegenSpeed: 2
   timeToRegen: 10
   healthRegenRate: 3
