@@ -442,6 +442,7 @@ Transform:
   - {fileID: 500486147596809927}
   - {fileID: 500486146679344078}
   - {fileID: 6647291403283824780}
+  - {fileID: 962573185384664593}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -614,6 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83fa486696f220643b9586f1e288b13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  walkPointObject: {fileID: 6993402304926536913}
   enemyGun: {fileID: 255090046504601113}
   gunTip: {fileID: 4268920106242310455}
   enemyEyes: {fileID: 500486146861658502}
@@ -646,6 +648,7 @@ MonoBehaviour:
   chasingPlayer: 0
   gunEquiped: 0
   spottedPlayer: 0
+  positionNearPlayerSet: 0
   currentWaitTime: 0
   gunShotTimer: 0
   footStepTimer: 0
@@ -797,6 +800,36 @@ Transform:
   m_Father: {fileID: 500486147288386173}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6993402304926536913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 962573185384664593}
+  m_Layer: 0
+  m_Name: WalkPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &962573185384664593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6993402304926536913}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 500486147288386173}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9107378931407187682
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +892,7 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.21634537
+      time: 0.012854159
       value: 1
       inSlope: -1.9521939
       outSlope: -1.9521939
@@ -868,8 +901,8 @@ AudioSource:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.32806015
-      value: 0.94225925
+      time: 0.13329697
+      value: 0.89945835
       inSlope: 0.0042589162
       outSlope: 0.0042589162
       tangentMode: 0
@@ -877,8 +910,8 @@ AudioSource:
       inWeight: 0.33333334
       outWeight: 0.8533637
     - serializedVersion: 3
-      time: 0.5556648
-      value: 0.7568578
+      time: 0.32310557
+      value: 0.7525777
       inSlope: -1.7261273
       outSlope: -1.7261273
       tangentMode: 0
@@ -886,8 +919,8 @@ AudioSource:
       inWeight: 0.33333334
       outWeight: 0.58131707
     - serializedVersion: 3
-      time: 0.70681095
-      value: 0.4404335
+      time: 0.4306574
+      value: 0.45755386
       inSlope: -2.2653506
       outSlope: -2.2653506
       tangentMode: 0

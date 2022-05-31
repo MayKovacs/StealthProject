@@ -6259,7 +6259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneScript: {fileID: 0}
-  sceneName: TestMap1
+  sceneName: TestMap3
 --- !u!65 &462111540
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24248,7 +24248,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3165640516082772905, guid: ad79928dcd241294b8d16fd6c3c0b2c4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ad79928dcd241294b8d16fd6c3c0b2c4, type: 3}
 --- !u!43 &1868954252
 Mesh:

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAIScript : MonoBehaviour
 {
     // Variables that need to be assigned in Unity
-    public GameObject enemyGun, gunTip;
+    public GameObject walkPointObject, enemyGun, gunTip;
     public Transform enemyEyes;
     public LayerMask isGround, isPlayer;
     public GameObject wayPoint1, wayPoint2, wayPoint3;
@@ -28,8 +28,8 @@ public class EnemyAIScript : MonoBehaviour
 
     // Private variables
     [SerializeField] private Vector3 walkPoint, lastKnownPlayerPosition;
-    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped, spottedPlayer;
-    [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel, playerVisionLevel;
+    [SerializeField] private bool walkPointSet, reachedWalkPoint, seePlayer, chasingPlayer, gunEquiped, spottedPlayer, positionNearPlayerSet;
+    [SerializeField] private float currentWaitTime, gunShotTimer, footStepTimer, footStepSoundSpeedup, susLevel, playerVisionLevel, wanderTimer;
     [SerializeField] private int wayPointNumber, wayPointCounter, investigatePriority;
 
     private void Awake()
@@ -74,6 +74,7 @@ public class EnemyAIScript : MonoBehaviour
         }
         else
         {
+            positionNearPlayerSet = false;
             if (!reachedWalkPoint)
             {
                 Patrolling();
@@ -211,6 +212,7 @@ public class EnemyAIScript : MonoBehaviour
         }
         if (!walkPointSet)
         {
+            wanderTimer = 15;
             investigatePriority++;
             int i = 0;
             while (!walkPointSet)
@@ -229,6 +231,13 @@ public class EnemyAIScript : MonoBehaviour
         if (walkPointSet)
         {
             agent.SetDestination(walkPoint);
+            walkPointObject.transform.position = walkPoint;
+            wanderTimer -= Time.deltaTime;
+            if (wanderTimer < 0)
+            {
+                wanderTimer = 0;
+                reachedWalkPoint = true;
+            }
         }
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
@@ -357,12 +366,69 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
+    private void SearchNearbyPlayerPoint()
+    {
+        float randomZ = Random.Range(-2, 2);
+        float randomX = Random.Range(-2, 2);
+
+        walkPoint = new Vector3(player.transform.position.x + randomX, player.transform.position.y + 2, player.transform.position.z + randomZ);
+
+        int i = 0;
+        while (i <= 8)
+        {
+            i++;
+            if (Physics.Raycast(walkPoint, -transform.up, 1, isGround))
+            {
+                walkPointSet = true;
+                agent.SetDestination(walkPoint);
+                walkPointObject.transform.position = walkPoint;
+                positionNearPlayerSet = true;
+            }
+            else if (Physics.Raycast(walkPoint, -transform.up, 1))
+            {
+                break;
+            }
+            else
+            {
+                walkPoint = new Vector3(walkPoint.x, walkPoint.y - 1, walkPoint.z);
+            }
+        }
+    }
+
     private void ChasePlayer()
     {
         IntenseMode();
         wayPointCounter = 0;
         chasingPlayer = true;
-        agent.SetDestination(player.transform.position);
+
+        Physics.Raycast(player.transform.position, -transform.up, out RaycastHit hit, 1f);
+        if (hit.transform.gameObject.layer == 8)
+        {
+            agent.SetDestination(player.transform.position);
+            walkPointObject.transform.position = player.transform.position;
+            positionNearPlayerSet = false;
+        }    
+        // if player is in a spot that is outside of an enemy's navigation (raycast not hitting ground layer)
+        else if (!positionNearPlayerSet)
+        {
+            Debug.Log("Player is outside of enemy naviagtion");
+            walkPointSet = false;
+            int i = 0;
+            while (!walkPointSet)
+            {
+                i++;
+                SearchNearbyPlayerPoint();
+                if (i >= 10 && !walkPointSet)
+                {
+                    Debug.LogError("Enemy couldn't find a position near the player");
+                    break;
+                }
+            }
+        }
+
+        //agent.SetDestination(player.transform.position);
+        //walkPointObject.transform.position = player.transform.position;
+
         Vector3 distanceToPlayer = transform.position - player.transform.position;
         if (distanceToPlayer.magnitude < attackRange)
         {
@@ -393,6 +459,7 @@ public class EnemyAIScript : MonoBehaviour
     private void Aim()
     {
         agent.SetDestination(transform.position);
+        walkPointObject.transform.position = walkPoint;
         transform.LookAt(player.transform);
     }
 

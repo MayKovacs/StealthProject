@@ -14,8 +14,14 @@ public class DebugScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("Do Debug Thing");
-            audioSource.Play();
-            //FindObjectOfType<AudioManager>().Play("VineBoomSoundEffect");
+            FindObjectOfType<AudioManager>().Play("VineBoomSoundEffect");
+            Time.timeScale = 20;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Debug.Log("Do Debug Thing 2");
+            FindObjectOfType<AudioManager>().Play("VineBoomSoundEffect");
+            Time.timeScale = 1;
         }
     }
 }
